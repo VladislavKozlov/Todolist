@@ -1,0 +1,62 @@
+﻿@model Todolist.Models.TodolistModel
+@{
+    Layout = null;
+}
+<script src="@Url.Content("~/Scripts/site.js")"></script>
+<div class="text-info">
+    <h4>@ViewBag.Error</h4>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TaskDescription)
+        </th>
+        <th>
+            Дата
+        </th>
+        <th>
+            Статус
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in ViewBag.Tasks)
+    {
+        if (@item.Approved == false)
+        {
+            <tr>
+                <td>
+                    @item.TaskDescription
+                </td>
+                <td>
+                    @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
+                </td>
+                <th>
+                    В процессе
+                </th>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId, }, new { @class = "ajaxLink" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr class="delete-task">
+                <td>
+                    @item.TaskDescription
+                </td>
+                <td>
+                    @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
+                </td>
+                <th>
+                    Решена
+                </th>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId }, new { @class = "ajaxLink" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
+                </td>
+            </tr>
+        }
+    }
+</table>

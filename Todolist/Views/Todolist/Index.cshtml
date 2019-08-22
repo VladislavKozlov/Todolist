@@ -1,0 +1,77 @@
+﻿@model Todolist.Models.TodolistModel
+@{
+    ViewBag.Title = "Todolist";
+}
+<br /><br />
+<p>@Html.ActionLink("Add Task", "Create", new { id = "" }, new { @class = "ajaxLink" })</p>
+<!--<a href="@Url.Action("Create", new { id = "" })" id="AddTask"><img class="ajaxLink" src='@Url.Content("~/Content/images/button1.jpg")' /></a>-->
+<!--<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-4">
+            <input type="button" id="AddTask" value="Add Task" class="ajaxLink" data-toggle="modal" onclick="location.href= @Url.Action("Create", new { @class = "ajaxLink",  @id = "" })" />
+        </div><!--Кнопкой легко открыть modal-dialog, когда окно размещено на этой же странице! А вот из частичного представления, нормально не открывается!:(
+    </div>
+</div>-->
+<br />
+<div id="PartialContent">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TaskDescription)
+            </th>
+            <th>
+                Дата
+            </th>
+            <th>
+                Статус
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in ViewBag.Tasks)
+        {
+            if (@item.Approved == false)
+            {
+                <tr>
+                    <td>
+                        @item.TaskDescription
+                    </td>
+                    <td>
+                        @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
+                    </td>
+                    <th>
+                        В процессе
+                    </th>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId, }, new { @class = "ajaxLink" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr class="delete-task">
+                    <td>
+                        @item.TaskDescription
+                    </td>
+                    <td>
+                        @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
+                    </td>
+                    <th>
+                        Решена
+                    </th>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId }, new { @class = "ajaxLink" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<!-- Modal -->
+<div id="ModDialog" class="modal fade" role="dialog">
+    <div id="DialogContent" class="modal-dialog">
+    </div>
+</div>
+<br />
