@@ -1,6 +1,6 @@
 var _dialog;
 
-$(document).ready(function () {     
+$(document).ready(function () {
     $.ajaxSetup({ cache: false });
     $(".ajaxLink").click(function (e) {
         e.preventDefault();
@@ -9,8 +9,8 @@ $(document).ready(function () {
             _dialog = $("#ModDialog")
             _dialog.modal("show");
         });
-    }); 
-}); 
+    });
+});
 
 function OnSuccess(result) {
     OnAjaxRequest(result);

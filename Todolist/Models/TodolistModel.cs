@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,10 +23,5 @@ namespace Todolist.Models
 
         [Display(Name = "Задача решена")]
         public bool Approved { get; set; }
-    }
-	
-	public class TodolistDbContext : DbContext
-    {         
-        public DbSet<TodolistModel> Todos { get; set; }            
-    }
+    }	
 }

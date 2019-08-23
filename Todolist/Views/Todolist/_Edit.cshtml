@@ -6,50 +6,55 @@
     {
         OnSuccess = "OnSuccess",
         OnFailure = "OnFailure"
-    };    
+    };
 }
 <script src="@Url.Content("~/Scripts/custom-validator.js")"></script>
 <!-- Modal content-->
 <div class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">@ViewBag.Title</h4>
     </div>
     @using (Ajax.BeginForm("Edit", "Todolist", FormMethod.Post, ajaxOptions, new { @class = "form-horizontal", @id = "AjaxForm", role = "form" }))
     {
-    <div class="modal-body">
-        <!-- Form -->
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(model => model.TodolistId)        
-        <div class="form-group">
-            <div class="col-md-4">
-                @Html.LabelFor(model => model.TaskDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="modal-body">
+            <!-- Form -->
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.TodolistId)
+            <div class="form-group">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.TaskDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.TaskDescription, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="form-group">
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.TaskDescription, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-8">
-                <div class="checkbox">
-                    @Html.CheckBoxFor(model => model.Approved, new { @class = "col-md-2 control-label" })
-                    @Html.LabelFor(model => model.Approved)
+            <div class="form-group">
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.CheckBoxFor(model => model.Approved, new { @class = "col-md-2 control-label" })
+                        @Html.LabelFor(model => model.Approved)
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-4">
+                    <input type="submit" id="Submit" value="Save" class="btn btn-success" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <div id="Results" class="text-success"></div>
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-md-4">
-                <input type="submit" id="Submit" value="Save" class="btn btn-success" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-10">
-                <div id="Results" class="text-success"></div>
-            </div>
-        </div>
-    </div>
     }
+    <div class="modal-footer">
+    </div>
 </div>
 
 

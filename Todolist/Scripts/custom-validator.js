@@ -15,12 +15,12 @@
             e.closest('.help-block').remove();
         },
         rules: {
-            "TaskDescription": {         
-                required: true,                   
-                maxlength: 100 
+            "TaskDescription": {
+                required: true,
+                maxlength: 100
             }
         },
-        messages: { 
+        messages: {
             "TaskDescription": {
                 required: "Данное поле должно быть заполнено!",
                 maxlength: "Описание задачи не может быть больше 100 символов!"

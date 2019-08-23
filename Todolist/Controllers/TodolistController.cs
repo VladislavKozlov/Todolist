@@ -3,6 +3,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
 using Todolist.Models;
+using Todolist.Models.ContextDb;
 
 /*
  * 
@@ -55,6 +56,7 @@ namespace Todolist.Controllers
 
         public ActionResult Create()
         {
+            ViewBag.Title = "Добавление задачи";
             return PartialView("_Create");                       
         }
 
@@ -100,7 +102,8 @@ namespace Todolist.Controllers
             if (todolist == null)
             {
                 return View("~/Error");
-            }            
+            }
+            ViewBag.Title = "Редактирование задачи";
             return PartialView("_Edit", todolist);          
         }
 
@@ -147,6 +150,7 @@ namespace Todolist.Controllers
             {
                 return View("~/Error");
             }
+            ViewBag.Title = "Удаление задачи";
             return PartialView("_Delete", todolist);
         }
 
