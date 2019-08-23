@@ -12,6 +12,18 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+    $.ajaxSetup({ cache: false });
+    $("#AddTask").click(function (e) {
+        e.preventDefault();
+        $.get(this.href, function (data) {
+            $("#DialogContent").html(data);
+            _dialog = $("#ModDialog")
+            _dialog.modal("show");
+        });
+    });
+});
+
 function OnSuccess(result) {
     OnAjaxRequest(result);
 }

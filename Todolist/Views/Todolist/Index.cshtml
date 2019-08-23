@@ -1,10 +1,12 @@
 ﻿@model Todolist.Models.TodolistModel
 @{
-    ViewBag.Title = "Todolist";
+                /**/
+
+                ViewBag.Title = "Todolist";
 }
 <br /><br />
-<p>@Html.ActionLink("ADD TASK", "Create", new { id = "" }, new { @class = "ajaxLink" })</p>
-<br />
+<a class="btn btn-info" href="@Url.Action("Create", new { id = "" })" id="AddTask" role="button">Add Task</a>
+<br /><br />
 <div id="PartialContent">
     <table class="table">
         <tr>
