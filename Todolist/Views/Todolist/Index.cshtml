@@ -8,59 +8,7 @@
 <a class="btn btn-info" href="@Url.Action("Create", new { id = "" })" id="AddTask" role="button">Add Task</a>
 <br /><br />
 <div id="PartialContent">
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TaskDescription)
-            </th>
-            <th>
-                Дата
-            </th>
-            <th>
-                Статус
-            </th>
-            <th></th>
-        </tr>
-        @foreach (var item in ViewBag.Tasks)
-        {
-            if (@item.Approved == false)
-            {
-                <tr>
-                    <td>
-                        @item.TaskDescription
-                    </td>
-                    <td>
-                        @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
-                    </td>
-                    <th>
-                        В процессе
-                    </th>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId, }, new { @class = "ajaxLink" }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
-                    </td>
-                </tr>
-            }
-            else
-            {
-                <tr class="delete-task">
-                    <td>
-                        @item.TaskDescription
-                    </td>
-                    <td>
-                        @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
-                    </td>
-                    <th>
-                        Решена
-                    </th>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId }, new { @class = "ajaxLink" }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
-                    </td>
-                </tr>
-            }
-        }
-    </table>
+    @Html.Partial("_PartialContent", Model)
 </div>
 <div id="ModDialog" class="modal fade" role="dialog">
     <div id="DialogContent" class="modal-dialog">

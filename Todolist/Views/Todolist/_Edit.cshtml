@@ -14,37 +14,29 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">@ViewBag.Title</h4>
     </div>
-    @using (Ajax.BeginForm("Edit", "Todolist", FormMethod.Post, ajaxOptions, new { @class = "form-horizontal", @id = "AjaxForm", role = "form" }))
+    @using (Ajax.BeginForm("Edit", "Todolist", FormMethod.Post, ajaxOptions, new { @class = "form", @id = "AjaxForm", role = "form" }))
     {
         <div class="modal-body">
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.TodolistId)
             <div class="form-group">
-                <div class="col-md-4">
-                    @Html.LabelFor(model => model.TaskDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-                </div>
+                @Html.LabelFor(model => model.TaskDescription)
             </div>
             <div class="form-group">
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.TaskDescription, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
+                @Html.EditorFor(model => model.TaskDescription, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("Approved", false)
+                    Задача решена
+                </label>
             </div>
             <div class="form-group">
-                <div class="col-md-8">
-                    <div class="checkbox">
-                        @Html.CheckBoxFor(model => model.Approved, new { @class = "col-md-2 control-label" })
-                        @Html.LabelFor(model => model.Approved)
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    <div id="Results" class="text-success"></div>
-                </div>
+                <div id="Results" class="text-success"></div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             <input type="submit" id="Submit" value="Save" class="btn btn-success" />
         </div>
     }

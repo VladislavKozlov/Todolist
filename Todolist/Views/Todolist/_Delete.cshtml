@@ -14,44 +14,34 @@
         <h4 class="modal-title">@ViewBag.Title</h4>
     </div>
     <div class="modal-body">
-        <div class="form-horizontal">
+        <div class="form">
             <br />
             <p class="text-info">Вы действительно хотите это удалить?</p>
             <hr />
             <div class="form-group">
-                <div class="col-md-4">
-                    <strong>Создана</strong>
-                </div>
+                <strong>Создана</strong>
             </div>
             <div class="form-group">
-                <div class="col-md-4">
-                    @Html.DisplayFor(model => model.EnrollmentDate)
-                </div>
+                @Html.DisplayFor(model => model.EnrollmentDate)
             </div>
             <div class="form-group">
-                <div class="col-md-4">
-                    @Html.LabelFor(model => model.TaskDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-                </div>
+                @Html.LabelFor(model => model.TaskDescription)
             </div>
             <div class="form-group">
-                <div class="col-md-4">
-                    @Html.DisplayFor(model => model.TaskDescription)
-                </div>
+                @Html.DisplayFor(model => model.TaskDescription)
             </div>
             <br />
         </div>
     </div>
     <div class="modal-footer">
-        @using (Ajax.BeginForm("Delete", "Todolist", FormMethod.Post, ajaxOptions, new { @class = "form-horizontal", @id = "AjaxForm", role = "form" }))
+        @using (Ajax.BeginForm("Delete", "Todolist", FormMethod.Post, ajaxOptions, new { @class = "form", @id = "AjaxForm", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.TodolistId)
             <div class="form-group">
-                <div class="col-md-10">
-                    <div id="Results" class="text-success"></div>
-                </div>
+                <div id="Results" class="text-success"></div>
             </div>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             <input type="submit" id="Submit" value="Delete" class="btn btn-danger" />
         }
     </div>
