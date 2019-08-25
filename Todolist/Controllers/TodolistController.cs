@@ -16,9 +16,9 @@ namespace Todolist.Controllers
         private TodolistModel _todolistToUpdate;
 
         private TodolistDbContext _db = new TodolistDbContext();
-        
+
         public ActionResult Index()
-        {           
+        {
             try
             {
                 var tasks =
@@ -31,9 +31,10 @@ namespace Todolist.Controllers
             }
             catch (Exception)
             {
-                return View("Error");
+                ViewBag.Error = "Ошибка доступа к данным!";
+                return View();
             }
-        }             
+        }
 
         public ActionResult PartialContent()
         {
@@ -50,14 +51,14 @@ namespace Todolist.Controllers
             catch (Exception)
             {
                 ViewBag.Error = "Ошибка доступа к данным!";
-                return PartialView("_PartialContent");                
-            }           
+                return PartialView("_PartialContent");
+            }
         }
 
         public ActionResult Create()
         {
             ViewBag.Title = "Добавление задачи";
-            return PartialView("_Create");                       
+            return PartialView("_Create");
         }
 
         [HttpPost, ActionName("Create")]
@@ -104,15 +105,15 @@ namespace Todolist.Controllers
                 return View("~/Error");
             }
             ViewBag.Title = "Редактирование задачи";
-            return PartialView("_Edit", todolist);          
+            return PartialView("_Edit", todolist);
         }
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public JsonResult EditPost(int? id, TodolistModel todolist)
-        {                                 
-           try
-           {
+        {
+            try
+            {
                 if (string.IsNullOrEmpty(todolist.TaskDescription))
                 {
                     return Json(new { EnableError = true, ErrorMsg = "Пожалуйста, введите текст задачи!" });
@@ -120,23 +121,23 @@ namespace Todolist.Controllers
                 else if (todolist.TaskDescription.Length > 100)
                 {
                     return Json(new { EnableError = true, ErrorMsg = "Описание задачи не может быть больше 100 символов!" });
-                }               
+                }
                 _todolistToUpdate = _db.Todos.Find(id);
-                if (TryUpdateModel(_todolistToUpdate, "", new string[] {"TaskDescription", "EnrollmentDate", "Approved" }))
+                if (TryUpdateModel(_todolistToUpdate, "", new string[] { "TaskDescription", "EnrollmentDate", "Approved" }))
                 {
-                    _todolistToUpdate.EnrollmentDate = DateTime.Now;                    
+                    _todolistToUpdate.EnrollmentDate = DateTime.Now;
                     _db.SaveChanges();
-                }               
+                }
                 else
                 {
                     return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно, пожалуйста ещё раз проверьте введённые данные!" });
                 }
                 return Json(new { EnableSuccess = true, SuccessMsg = "Задача успешно отредактирована!" });
-           }
-           catch (RetryLimitExceededException)
-           {
-                  return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно, попробуйте ещё раз или обратитесь к системному администратору!" });
-           }
+            }
+            catch (RetryLimitExceededException)
+            {
+                return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно, попробуйте ещё раз или обратитесь к системному администратору!" });
+            }
         }
 
         public ActionResult Delete(int? id)
@@ -144,7 +145,7 @@ namespace Todolist.Controllers
             if (id == null)
             {
                 return View("~/Error");
-            }            
+            }
             TodolistModel todolist = _db.Todos.Find(id);
             if (todolist == null)
             {
@@ -165,7 +166,7 @@ namespace Todolist.Controllers
                 _db.SaveChanges();
             }
             catch (RetryLimitExceededException)
-            {                
+            {
                 return Json(new { EnableError = true, ErrorMsg = "Удаление не произошло, попробуйте ещё раз или обратитесь к системному администратору!" });
             }
             return Json(new { EnableSuccess = true, SuccessMsg = "Задача успешно удалена!" });
