@@ -4,7 +4,7 @@
  * 
  * @author Vladislav Kozlov <k2v.akosa@gmail.com>
 */
-namespace Todolist.Models.ContextDb
+namespace Todolist.ContextDb
 {
 	public class TodolistDbContext : DbContext
     {         

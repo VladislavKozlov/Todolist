@@ -1,14 +1,14 @@
-﻿@model Todolist.Models.TodolistModel
+﻿@using Todolist.ViewModels
+@model TasksVm
 @{
     /**/
 
     Layout = null;
 }
-<script src="@Url.Content("~/Scripts/site.js")"></script>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.TaskDescription)
+            Описание задачи
         </th>
         <th>
             Дата
@@ -18,9 +18,9 @@
         </th>
         <th></th>
     </tr>
-    @foreach (var item in ViewBag.Tasks)
+    @foreach (var item in Model.Tasks)
     {
-        if (@item.Approved == false)
+        if (!item.Approved)
         {
             <tr>
                 <td>
@@ -40,7 +40,7 @@
         }
         else
         {
-            <tr class="delete-task">
+            <tr class="approved-task">
                 <td>
                     @item.TaskDescription
                 </td>
@@ -61,3 +61,4 @@
 <div class="text-info">
     <h4>@ViewBag.Error</h4>
 </div>
+<script src="@Url.Content("~/Scripts/site.js")"></script>

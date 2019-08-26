@@ -126,14 +126,16 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="ContextDb\TodolistModel.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\TodolistController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ContextDb\TodolistDbContext.cs" />
-    <Compile Include="Models\TodolistModel.cs" />
+    <Compile Include="ContextDb\TodolistDbContext.cs" />
+    <Compile Include="Models\TaskInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\TasksVm.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\TodolistDB.mdf" />
@@ -175,11 +177,11 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Todolist\_Create.cshtml" />
     <Content Include="Views\Todolist\_Delete.cshtml" />
-    <Content Include="Views\Todolist\_Edit.cshtml" />
     <Content Include="Views\Todolist\_PartialContent.cshtml" />
     <Content Include="Views\Todolist\Index.cshtml" />
+    <Content Include="Views\Todolist\_Create.cshtml" />
+    <Content Include="Views\Todolist\_Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

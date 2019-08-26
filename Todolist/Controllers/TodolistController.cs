@@ -2,8 +2,9 @@
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
+using Todolist.ContextDb;
+using Todolist.ViewModels;
 using Todolist.Models;
-using Todolist.Models.ContextDb;
 
 /*
  * 
@@ -14,6 +15,8 @@ namespace Todolist.Controllers
     public class TodolistController : Controller
     {
         private TodolistModel _todolistToUpdate;
+        private String _taskDescription;
+        private bool _approved;
 
         private TodolistDbContext _db = new TodolistDbContext();
 
@@ -21,13 +24,10 @@ namespace Todolist.Controllers
         {
             try
             {
-                var tasks =
-                (from item in _db.Todos
-                 orderby item.EnrollmentDate descending
-                 select item).ToList();
+                var tasks = _db.Todos.OrderByDescending(item => item.EnrollmentDate).ToList();
+                TasksVm tasksVm = new TasksVm { Tasks = tasks };
 
-                ViewBag.Tasks = tasks;
-                return View();
+                return View(tasksVm);
             }
             catch (Exception)
             {
@@ -40,13 +40,10 @@ namespace Todolist.Controllers
         {
             try
             {
-                var tasks =
-                (from item in _db.Todos
-                 orderby item.EnrollmentDate descending
-                 select item).ToList();
+                var tasks = _db.Todos.OrderByDescending(item => item.EnrollmentDate).ToList();
+                TasksVm tasksVm = new TasksVm { Tasks = tasks };
 
-                ViewBag.Tasks = tasks;
-                return PartialView("_PartialContent");
+                return PartialView("_PartialContent", tasksVm);
             }
             catch (Exception)
             {
@@ -63,24 +60,36 @@ namespace Todolist.Controllers
 
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public JsonResult CreatePost(TodolistModel todolist)
+        public JsonResult CreatePost(TaskInput taskInput)
         {
             try
             {
-                if (string.IsNullOrEmpty(todolist.TaskDescription))
+                if (string.IsNullOrEmpty(taskInput.TaskDescription))
                 {
                     return Json(new { EnableError = true, ErrorMsg = "Пожалуйста, введите текст задачи!" });
                 }
-                else if (todolist.TaskDescription.Length > 100)
+                else if (taskInput.TaskDescription.Length > 100)
                 {
                     return Json(new { EnableError = true, ErrorMsg = "Описание задачи не может быть больше 100 символов!" });
                 }
                 if (ModelState.IsValid)
                 {
+                    _taskDescription = taskInput.TaskDescription;                  
+                    _approved = taskInput.Approved; 
+                }
+                else
+                {
+                    return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно(vm), пожалуйста ещё раз проверьте введённые данные!" });
+                }
+                TodolistModel todolist = new TodolistModel();
+                if (ModelState.IsValid)
+                {
+                    todolist.TaskDescription = _taskDescription;
                     todolist.EnrollmentDate = DateTime.Now;
+                    todolist.Approved = _approved;
                     _db.Todos.Add(todolist);
                     _db.SaveChanges();
-                }
+                }               
                 else
                 {
                     return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно, пожалуйста ещё раз проверьте введённые данные!" });
@@ -100,27 +109,37 @@ namespace Todolist.Controllers
                 return View("~/Error");
             }
             TodolistModel todolist = _db.Todos.Find(id);
-            if (todolist == null)
+            TaskInput taskInput = new TaskInput(todolist);
+            if (todolist == null || taskInput == null)
             {
                 return View("~/Error");
             }
             ViewBag.Title = "Редактирование задачи";
-            return PartialView("_Edit", todolist);
+            return PartialView("_Edit", taskInput);
         }
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public JsonResult EditPost(int? id, TodolistModel todolist)
+        public JsonResult EditPost(int? id, TaskInput taskInput)
         {
             try
             {
-                if (string.IsNullOrEmpty(todolist.TaskDescription))
+                if (string.IsNullOrEmpty(taskInput.TaskDescription))
                 {
                     return Json(new { EnableError = true, ErrorMsg = "Пожалуйста, введите текст задачи!" });
                 }
-                else if (todolist.TaskDescription.Length > 100)
+                else if (taskInput.TaskDescription.Length > 100)
                 {
                     return Json(new { EnableError = true, ErrorMsg = "Описание задачи не может быть больше 100 символов!" });
+                }
+                if (ModelState.IsValid)
+                {
+                    _taskDescription = taskInput.TaskDescription;
+                    _approved = taskInput.Approved;
+                }
+                else
+                {
+                    return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно(vm), пожалуйста ещё раз проверьте введённые данные!" });
                 }
                 _todolistToUpdate = _db.Todos.Find(id);
                 if (TryUpdateModel(_todolistToUpdate, "", new string[] { "TaskDescription", "EnrollmentDate", "Approved" }))
@@ -147,12 +166,13 @@ namespace Todolist.Controllers
                 return View("~/Error");
             }
             TodolistModel todolist = _db.Todos.Find(id);
+            TaskInput taskInput = new TaskInput(todolist);
             if (todolist == null)
             {
                 return View("~/Error");
             }
             ViewBag.Title = "Удаление задачи";
-            return PartialView("_Delete", todolist);
+            return PartialView("_Delete", taskInput);
         }
 
         [HttpPost]

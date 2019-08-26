@@ -3,7 +3,7 @@
         errorClass: 'text-danger',
         errorElement: 'div',
         errorPlacement: function (error, e) {
-            e.parents('.form-group > div').append(error);
+            e.parents('.form-group').append(error);
         },
         highlight: function (e) {
 

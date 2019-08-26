@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Todolist.ContextDb;
 
 /*
  * 
@@ -8,20 +8,33 @@ using System.ComponentModel.DataAnnotations.Schema;
 */
 namespace Todolist.Models
 {
-    public class TodolistModel
+    public class TaskInput
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TodolistId { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "Описание не может быть более длинным чем 100 символов.")]
         [Display(Name = "Описание задачи")]
         public string TaskDescription { get; set; }
-		
+
         public DateTime EnrollmentDate { get; set; }
 
         [Display(Name = "Задача решена")]
         public bool Approved { get; set; }
-    }	
+
+        public TaskInput()
+        {
+        }
+
+        public TaskInput(TodolistModel todolistModel)
+        {
+
+            TodolistId = todolistModel.TodolistId;
+            TaskDescription = todolistModel.TaskDescription;
+            EnrollmentDate = todolistModel.EnrollmentDate;
+            Approved = todolistModel.Approved;
+        }
+
+        public TodolistModel Task { get; set; }
+    }
 }
