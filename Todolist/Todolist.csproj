@@ -136,6 +136,7 @@
     <Compile Include="Models\TaskInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\TasksVm.cs" />
+    <Compile Include="ViewModels\TaskVm.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\TodolistDB.mdf" />

@@ -3,8 +3,8 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
 using Todolist.ContextDb;
-using Todolist.ViewModels;
 using Todolist.Models;
+using Todolist.ViewModels;
 
 /*
  * 
@@ -15,8 +15,8 @@ namespace Todolist.Controllers
     public class TodolistController : Controller
     {
         private TodolistModel _todolistToUpdate;
-        private String _taskDescription;
-        private bool _approved;
+        private string _validationErrors;
+
 
         private TodolistDbContext _db = new TodolistDbContext();
 
@@ -58,41 +58,25 @@ namespace Todolist.Controllers
             return PartialView("_Create");
         }
 
-        [HttpPost, ActionName("Create")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult CreatePost(TaskInput taskInput)
+        public JsonResult Create(TaskInput taskInput)
         {
             try
             {
-                if (string.IsNullOrEmpty(taskInput.TaskDescription))
-                {
-                    return Json(new { EnableError = true, ErrorMsg = "Пожалуйста, введите текст задачи!" });
-                }
-                else if (taskInput.TaskDescription.Length > 100)
-                {
-                    return Json(new { EnableError = true, ErrorMsg = "Описание задачи не может быть больше 100 символов!" });
-                }
-                if (ModelState.IsValid)
-                {
-                    _taskDescription = taskInput.TaskDescription;                  
-                    _approved = taskInput.Approved; 
-                }
-                else
-                {
-                    return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно(vm), пожалуйста ещё раз проверьте введённые данные!" });
-                }
                 TodolistModel todolist = new TodolistModel();
                 if (ModelState.IsValid)
                 {
-                    todolist.TaskDescription = _taskDescription;
+                    todolist.TaskDescription = taskInput.TaskDescription;
                     todolist.EnrollmentDate = DateTime.Now;
-                    todolist.Approved = _approved;
+                    todolist.Approved = taskInput.Approved;
                     _db.Todos.Add(todolist);
                     _db.SaveChanges();
-                }               
+                }
                 else
                 {
-                    return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно, пожалуйста ещё раз проверьте введённые данные!" });
+                    _validationErrors = string.Join(",", ModelState.Values.Where(E => E.Errors.Count > 0).SelectMany(E => E.Errors).Select(E => E.ErrorMessage).ToArray());
+                    return Json(new { EnableError = true, ErrorMsg = _validationErrors });
                 }
                 return Json(new { EnableSuccess = true, SuccessMsg = "Задача успешно создана!" });
             }
@@ -109,47 +93,33 @@ namespace Todolist.Controllers
                 return View("~/Error");
             }
             TodolistModel todolist = _db.Todos.Find(id);
-            TaskInput taskInput = new TaskInput(todolist);
-            if (todolist == null || taskInput == null)
+            TaskVm taskVm = new TaskVm(todolist);
+            if (todolist == null || taskVm == null)
             {
                 return View("~/Error");
             }
             ViewBag.Title = "Редактирование задачи";
-            return PartialView("_Edit", taskInput);
+            return PartialView("_Edit", taskVm);
         }
 
-        [HttpPost, ActionName("Edit")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult EditPost(int? id, TaskInput taskInput)
+        public JsonResult Edit(int? id, TaskInput taskInput)
         {
             try
-            {
-                if (string.IsNullOrEmpty(taskInput.TaskDescription))
-                {
-                    return Json(new { EnableError = true, ErrorMsg = "Пожалуйста, введите текст задачи!" });
-                }
-                else if (taskInput.TaskDescription.Length > 100)
-                {
-                    return Json(new { EnableError = true, ErrorMsg = "Описание задачи не может быть больше 100 символов!" });
-                }
+            {                
+                _todolistToUpdate = _db.Todos.Find(id);
                 if (ModelState.IsValid)
                 {
-                    _taskDescription = taskInput.TaskDescription;
-                    _approved = taskInput.Approved;
-                }
-                else
-                {
-                    return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно(vm), пожалуйста ещё раз проверьте введённые данные!" });
-                }
-                _todolistToUpdate = _db.Todos.Find(id);
-                if (TryUpdateModel(_todolistToUpdate, "", new string[] { "TaskDescription", "EnrollmentDate", "Approved" }))
-                {
+                    _todolistToUpdate.TaskDescription = taskInput.TaskDescription;
                     _todolistToUpdate.EnrollmentDate = DateTime.Now;
+                    _todolistToUpdate.Approved = taskInput.Approved;
                     _db.SaveChanges();
                 }
                 else
                 {
-                    return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно, пожалуйста ещё раз проверьте введённые данные!" });
+                    _validationErrors = string.Join(",", ModelState.Values.Where(E => E.Errors.Count > 0).SelectMany(E => E.Errors).Select(E => E.ErrorMessage).ToArray());
+                    return Json(new { EnableError = true, ErrorMsg = _validationErrors });
                 }
                 return Json(new { EnableSuccess = true, SuccessMsg = "Задача успешно отредактирована!" });
             }
@@ -166,13 +136,13 @@ namespace Todolist.Controllers
                 return View("~/Error");
             }
             TodolistModel todolist = _db.Todos.Find(id);
-            TaskInput taskInput = new TaskInput(todolist);
-            if (todolist == null)
+            TaskVm taskVm = new TaskVm(todolist);
+            if (todolist == null || taskVm == null)
             {
                 return View("~/Error");
             }
             ViewBag.Title = "Удаление задачи";
-            return PartialView("_Delete", taskInput);
+            return PartialView("_Delete", taskVm);
         }
 
         [HttpPost]

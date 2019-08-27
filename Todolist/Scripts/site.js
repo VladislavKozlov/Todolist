@@ -1,3 +1,4 @@
+var _url = "/Todolist/PartialContent";
 var _dialog;
 
 $(document).ready(function () {
@@ -32,8 +33,7 @@ function OnFailure() {
     $("#Results").html("Запрос не выполнен!");
 }
 
-function RefreshPartialContent() {
-    var url = "/Todolist/PartialContent";
+function RefreshPartialContent(url) {
     $.get(url, null, function (data) {
         $("#PartialContent").html(data);
     });
@@ -43,7 +43,7 @@ function OnAjaxRequest(result) {
     if (result.EnableSuccess) {
         alert(result.SuccessMsg);
         _dialog.modal("hide");
-        RefreshPartialContent();
+        RefreshPartialContent(_url);
     }
     if (result.EnableError) {
         $("#Results").html(result.ErrorMsg);
