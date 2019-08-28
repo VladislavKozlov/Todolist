@@ -20,42 +20,21 @@
     </tr>
     @foreach (var item in Model.Tasks)
     {
-        if (!item.Approved)
-        {
-            <tr>
-                <td>
-                    @item.TaskDescription
-                </td>
-                <td>
-                    @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
-                </td>
-                <th>
-                    В процессе
-                </th>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId, }, new { @class = "ajaxLink" }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
-                </td>
-            </tr>
-        }
-        else
-        {
-            <tr class="approved-task">
-                <td>
-                    @item.TaskDescription
-                </td>
-                <td>
-                    @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
-                </td>
-                <th>
-                    Решена
-                </th>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId }, new { @class = "ajaxLink" }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
-                </td>
-            </tr>
-        }
+        <tr class="@(!item.Approved ? "" : "approved-task")">
+            <td>
+                @item.TaskDescription
+            </td>
+            <td>
+                @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
+            </td>
+            <td>
+                @(!item.Approved ? "В процессе" : "Решена")
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId, }, new { @class = "ajaxLink" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
+            </td>
+        </tr>
     }
 </table>
 <div class="text-info">

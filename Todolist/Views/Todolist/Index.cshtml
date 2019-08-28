@@ -1,13 +1,12 @@
 ﻿@using Todolist.ViewModels
 @model TasksVm
-
 @{
     /**/
 
     ViewBag.Title = "Todolist";
 }
 <br /><br />
-<a class="btn btn-info" href="@Url.Action("Create", new { id = "" })" id="AddTask" role="button">Add Task</a>
+<a class="btn btn-info" href="@Url.Action("Create")" id="AddTask" role="button">Add Task</a>
 <br /><br />
 <div id="PartialContent">
     @Html.Partial("_PartialContent", Model)

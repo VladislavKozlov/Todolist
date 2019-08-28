@@ -20,6 +20,8 @@ namespace Todolist.ViewModels
         [Display(Name = "Задача решена")]
         public bool Approved { get; set; }
 
+        public string Title { get; set; }
+
         public TaskVm()
         {
         }

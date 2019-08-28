@@ -1,7 +1,6 @@
 ﻿@using Todolist.ViewModels
 @model TaskVm
 @{
-    Layout = null;
     AjaxOptions ajaxOptions = new AjaxOptions
     {
         OnSuccess = "OnSuccess",
@@ -11,7 +10,7 @@
 <div class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" id="WindowClose" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">@ViewBag.Title</h4>
+        <h4 class="modal-title">@Model.Title</h4>
     </div>
     @using (Ajax.BeginForm("Create", "Todolist", FormMethod.Post, ajaxOptions, new { @class = "form", @id = "AjaxForm", role = "form" }))
     {
@@ -19,8 +18,8 @@
             @Html.AntiForgeryToken()
             @Html.Hidden("Approved", false)
             <div class="form-group">
-                @Html.LabelFor(model => model.TaskDescription)
-                @Html.EditorFor(model => model.TaskDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.TaskDescription)
+                @Html.EditorFor(m => m.TaskDescription, new { htmlAttributes = new { @class = "form-control" } })
             </div>
             <div class="form-group">
                 <div id="Results" class="text-danger"></div>

@@ -14,10 +14,6 @@ namespace Todolist.Controllers
 {
     public class TodolistController : Controller
     {
-        private TodolistModel _todolistToUpdate;
-        private string _validationErrors;
-
-
         private TodolistDbContext _db = new TodolistDbContext();
 
         public ActionResult Index()
@@ -54,8 +50,9 @@ namespace Todolist.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Title = "Добавление задачи";
-            return PartialView("_Create");
+            TaskVm taskVm = new TaskVm();
+            taskVm.Title = "Добавление задачи";
+            return PartialView("_Create", taskVm);
         }
 
         [HttpPost]
@@ -75,8 +72,8 @@ namespace Todolist.Controllers
                 }
                 else
                 {
-                    _validationErrors = string.Join(",", ModelState.Values.Where(E => E.Errors.Count > 0).SelectMany(E => E.Errors).Select(E => E.ErrorMessage).ToArray());
-                    return Json(new { EnableError = true, ErrorMsg = _validationErrors });
+                    string validationErrors = string.Join(",", ModelState.Values.Where(E => E.Errors.Count > 0).SelectMany(E => E.Errors).Select(E => E.ErrorMessage).ToArray());
+                    return Json(new { EnableError = true, ErrorMsg = validationErrors });
                 }
                 return Json(new { EnableSuccess = true, SuccessMsg = "Задача успешно создана!" });
             }
@@ -93,12 +90,12 @@ namespace Todolist.Controllers
                 return View("~/Error");
             }
             TodolistModel todolist = _db.Todos.Find(id);
-            TaskVm taskVm = new TaskVm(todolist);
-            if (todolist == null || taskVm == null)
+            if (todolist == null)
             {
                 return View("~/Error");
             }
-            ViewBag.Title = "Редактирование задачи";
+            TaskVm taskVm = new TaskVm(todolist);
+            taskVm.Title = "Редактирование задачи";
             return PartialView("_Edit", taskVm);
         }
 
@@ -107,19 +104,19 @@ namespace Todolist.Controllers
         public JsonResult Edit(int? id, TaskInput taskInput)
         {
             try
-            {                
-                _todolistToUpdate = _db.Todos.Find(id);
+            {
+                var todolistToUpdate = _db.Todos.Find(id);
                 if (ModelState.IsValid)
                 {
-                    _todolistToUpdate.TaskDescription = taskInput.TaskDescription;
-                    _todolistToUpdate.EnrollmentDate = DateTime.Now;
-                    _todolistToUpdate.Approved = taskInput.Approved;
+                    todolistToUpdate.TaskDescription = taskInput.TaskDescription;
+                    todolistToUpdate.EnrollmentDate = DateTime.Now;
+                    todolistToUpdate.Approved = taskInput.Approved;
                     _db.SaveChanges();
                 }
                 else
                 {
-                    _validationErrors = string.Join(",", ModelState.Values.Where(E => E.Errors.Count > 0).SelectMany(E => E.Errors).Select(E => E.ErrorMessage).ToArray());
-                    return Json(new { EnableError = true, ErrorMsg = _validationErrors });
+                    string validationErrors = string.Join(",", ModelState.Values.Where(E => E.Errors.Count > 0).SelectMany(E => E.Errors).Select(E => E.ErrorMessage).ToArray());
+                    return Json(new { EnableError = true, ErrorMsg = validationErrors });
                 }
                 return Json(new { EnableSuccess = true, SuccessMsg = "Задача успешно отредактирована!" });
             }
@@ -136,12 +133,12 @@ namespace Todolist.Controllers
                 return View("~/Error");
             }
             TodolistModel todolist = _db.Todos.Find(id);
-            TaskVm taskVm = new TaskVm(todolist);
-            if (todolist == null || taskVm == null)
+            if (todolist == null)
             {
                 return View("~/Error");
             }
-            ViewBag.Title = "Удаление задачи";
+            TaskVm taskVm = new TaskVm(todolist);
+            taskVm.Title = "Удаление задачи";
             return PartialView("_Delete", taskVm);
         }
 
@@ -160,15 +157,6 @@ namespace Todolist.Controllers
                 return Json(new { EnableError = true, ErrorMsg = "Удаление не произошло, попробуйте ещё раз или обратитесь к системному администратору!" });
             }
             return Json(new { EnableSuccess = true, SuccessMsg = "Задача успешно удалена!" });
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
