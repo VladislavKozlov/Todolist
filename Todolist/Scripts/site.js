@@ -1,4 +1,4 @@
-var _partialContentUrl = "/Todolist/PartialContent";
+var _partialContentUrl;
 
 $(document).ready(function () {
     $.ajaxSetup({ cache: false });
