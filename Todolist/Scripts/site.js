@@ -1,5 +1,4 @@
-var _url = "/Todolist/PartialContent";
-var _dialog;
+var _partialContentUrl = "/Todolist/PartialContent";
 
 $(document).ready(function () {
     $.ajaxSetup({ cache: false });
@@ -7,8 +6,7 @@ $(document).ready(function () {
         e.preventDefault();
         $.get(this.href, function (data) {
             $("#DialogContent").html(data);
-            _dialog = $("#ModDialog")
-            _dialog.modal("show");
+            $("#ModDialog").modal("show");
         });
     });
 });
@@ -19,8 +17,7 @@ $(document).ready(function () {
         e.preventDefault();
         $.get($(this).data("url"), function (data) {
             $("#DialogContent").html(data);
-            _dialog = $("#ModDialog")
-            _dialog.modal("show");
+            $("#ModDialog").modal("show");
         });
     });
 });
@@ -41,12 +38,25 @@ function RefreshPartialContent(url) {
 
 function OnAjaxRequest(result) {
     if (result.EnableSuccess) {
-        alert(result.SuccessMsg);
-        _dialog.modal("hide");
-        RefreshPartialContent(_url);
+        alertBootstrap(result.SuccessMsg);
+        $("#ModDialog").modal("hide");
+        RefreshPartialContent(_partialContentUrl);
     }
     if (result.EnableError) {
         $("#Results").html(result.ErrorMsg);
     }
 }
+
+function initUrl(partialContentUrl) {
+    _partialContentUrl = partialContentUrl;
+}
+
+function alertBootstrap(mess) {
+    $("#InfoMessage").text(mess);
+    $(".alert").show();
+    window.setTimeout(function () {
+        $(".alert").hide();
+    }, 3000);
+}
+
 
