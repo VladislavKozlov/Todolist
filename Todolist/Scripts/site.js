@@ -17,7 +17,7 @@ $(document).ready(function () {
     $.ajaxSetup({ cache: false });
     $("#AddTask").click(function (e) {
         e.preventDefault();
-        $.get(this.href, function (data) {
+        $.get($(this).data("url"), function (data) {
             $("#DialogContent").html(data);
             _dialog = $("#ModDialog")
             _dialog.modal("show");

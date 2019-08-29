@@ -6,7 +6,7 @@
     ViewBag.Title = "Todolist";
 }
 <br /><br />
-<a class="btn btn-info" href="@Url.Action("Create")" id="AddTask" role="button">Add Task</a>
+<button type="button" class="btn btn-info" data-url="@Url.Action("Create")" id="AddTask">Add Task</button>
 <br /><br />
 <div id="PartialContent">
     @Html.Partial("_PartialContent", Model)
