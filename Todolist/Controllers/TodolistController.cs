@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
 using Todolist.ContextDb;
@@ -77,7 +76,7 @@ namespace Todolist.Controllers
                 }
                 return Json(new { EnableSuccess = true, SuccessMsg = "Задача успешно создана!" });
             }
-            catch (RetryLimitExceededException)
+            catch (Exception)
             {
                 return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно, попробуйте ещё раз или обратитесь к системному администратору!" });
             }
@@ -120,7 +119,7 @@ namespace Todolist.Controllers
                 }
                 return Json(new { EnableSuccess = true, SuccessMsg = "Задача успешно отредактирована!" });
             }
-            catch (RetryLimitExceededException)
+            catch (Exception)
             {
                 return Json(new { EnableError = true, ErrorMsg = "Что-то идет неправильно, попробуйте ещё раз или обратитесь к системному администратору!" });
             }
@@ -152,7 +151,7 @@ namespace Todolist.Controllers
                 _db.Todos.Remove(todolist);
                 _db.SaveChanges();
             }
-            catch (RetryLimitExceededException)
+            catch (Exception)
             {
                 return Json(new { EnableError = true, ErrorMsg = "Удаление не произошло, попробуйте ещё раз или обратитесь к системному администратору!" });
             }

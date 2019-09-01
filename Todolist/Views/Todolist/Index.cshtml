@@ -1,10 +1,12 @@
 ﻿@using Todolist.ViewModels
 @model TasksVm
 @{
-    /**/
-
     ViewBag.Title = "Todolist";
 }
+<div class="alert alert-success alert-dismissible" style="display:none;" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <div id="InfoMessage"></div>
+</div>
 <br /><br />
 <button type="button" class="btn btn-info" data-url="@Url.Action("Create")" id="AddTask">Add Task</button>
 <br /><br />
@@ -14,10 +16,6 @@
 <div id="ModDialog" class="modal fade" role="dialog">
     <div id="DialogContent" class="modal-dialog">
     </div>
-</div>
-<div class="alert alert-success alert-dismissible" style="display:none;" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <div id="InfoMessage"></div>
 </div>
 <script>
     initUrl('@Url.Action("PartialContent", "Todolist")');

@@ -9,9 +9,6 @@ $(document).ready(function () {
             $("#ModDialog").modal("show");
         });
     });
-});
-
-$(document).ready(function () {
     $.ajaxSetup({ cache: false });
     $("#AddTask").click(function (e) {
         e.preventDefault();
