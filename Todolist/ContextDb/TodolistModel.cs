@@ -15,11 +15,11 @@ namespace Todolist.ContextDb
         public int TodolistId { get; set; }
 
         [Required]
-        [StringLength(100)]       
+        [StringLength(100)]
         public string TaskDescription { get; set; }
-		
+
         public DateTime EnrollmentDate { get; set; }
-        
+
         public bool Approved { get; set; }
-    }	
+    }
 }

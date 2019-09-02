@@ -8,8 +8,7 @@ $(document).ready(function () {
             $("#DialogContent").html(data);
             $("#ModDialog").modal("show");
         });
-    });
-    $.ajaxSetup({ cache: false });
+    });    
     $("#AddTask").click(function (e) {
         e.preventDefault();
         $.get($(this).data("url"), function (data) {
@@ -50,9 +49,9 @@ function initUrl(partialContentUrl) {
 
 function alertBootstrap(mess) {
     $("#InfoMessage").text(mess);
-    $(".alert").show();
+    $("#Alert").removeClass("hide");
     window.setTimeout(function () {
-        $(".alert").hide();
+        $("#Alert").addClass("hide");
     }, 3000);
 }
 
