@@ -3,6 +3,8 @@ using System.Linq;
 using System.Web.Mvc;
 using Todolist.ContextDb;
 using Todolist.Models;
+using Todolist.Repositories;
+using Todolist.Services;
 using Todolist.ViewModels;
 
 /*
@@ -13,15 +15,15 @@ namespace Todolist.Controllers
 {
     public class TodolistController : Controller
     {
-        private TodolistDbContext _db = new TodolistDbContext();
+        private TaskService _taskService = new TaskService();
+        private TaskRepository _taskRepository = new TaskRepository();
 
         public ActionResult Index()
         {
             try
             {
-                var tasks = _db.Todos.OrderByDescending(item => item.EnrollmentDate).ToList();
+                var tasks = _taskRepository.OrderByDescending();
                 TasksVm tasksVm = new TasksVm { Tasks = tasks };
-
                 return View(tasksVm);
             }
             catch (Exception)
@@ -35,9 +37,8 @@ namespace Todolist.Controllers
         {
             try
             {
-                var tasks = _db.Todos.OrderByDescending(item => item.EnrollmentDate).ToList();
+                var tasks = _taskRepository.OrderByDescending();
                 TasksVm tasksVm = new TasksVm { Tasks = tasks };
-
                 return PartialView("_PartialContent", tasksVm);
             }
             catch (Exception)
@@ -63,11 +64,8 @@ namespace Todolist.Controllers
                 TodolistModel todolist = new TodolistModel();
                 if (ModelState.IsValid)
                 {
-                    todolist.TaskDescription = taskInput.TaskDescription;
-                    todolist.EnrollmentDate = DateTime.Now;
-                    todolist.Approved = taskInput.Approved;
-                    _db.Todos.Add(todolist);
-                    _db.SaveChanges();
+                    _taskService.InitTaskService(todolist, taskInput);
+                    _taskRepository.Add(todolist);
                 }
                 else
                 {
@@ -88,7 +86,8 @@ namespace Todolist.Controllers
             {
                 return View("~/Error");
             }
-            TodolistModel todolist = _db.Todos.Find(id);
+            int todosId = (int)id;
+            TodolistModel todolist = _taskRepository.Find(todosId);
             if (todolist == null)
             {
                 return View("~/Error");
@@ -104,13 +103,12 @@ namespace Todolist.Controllers
         {
             try
             {
-                var todolistToUpdate = _db.Todos.Find(id);
+                int todosId = (int)id;
+                var todolistToUpdate = _taskRepository.Find(todosId);
                 if (ModelState.IsValid)
                 {
-                    todolistToUpdate.TaskDescription = taskInput.TaskDescription;
-                    todolistToUpdate.EnrollmentDate = DateTime.Now;
-                    todolistToUpdate.Approved = taskInput.Approved;
-                    _db.SaveChanges();
+                    _taskService.InitTaskService(todolistToUpdate, taskInput);
+                    _taskRepository.Save();
                 }
                 else
                 {
@@ -131,7 +129,8 @@ namespace Todolist.Controllers
             {
                 return View("~/Error");
             }
-            TodolistModel todolist = _db.Todos.Find(id);
+            int todosId = (int)id;
+            TodolistModel todolist = _taskRepository.Find(todosId);
             if (todolist == null)
             {
                 return View("~/Error");
@@ -147,9 +146,8 @@ namespace Todolist.Controllers
         {
             try
             {
-                TodolistModel todolist = _db.Todos.Find(id);
-                _db.Todos.Remove(todolist);
-                _db.SaveChanges();
+                TodolistModel todolist = _taskRepository.Find(id);
+                _taskRepository.Remove(todolist);
             }
             catch (Exception)
             {
