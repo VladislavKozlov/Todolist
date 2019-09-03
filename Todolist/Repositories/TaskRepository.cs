@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Todolist.ContextDb;
 
@@ -10,38 +11,42 @@ namespace Todolist.Repositories
 {
     public class TaskRepository
     {
-        private TodolistDbContext _db;
+        private TodolistDbContext _dbConnection;
+
+        public void SetDbConnection(TodolistDbContext dbConnection)
+        {
+            _dbConnection = dbConnection;
+        }
 
         public TaskRepository()
         {
-            _db = new TodolistDbContext();
         }
 
         public List<TodolistModel> GetTasks()
         {
-            return _db.Todos.OrderByDescending(item => item.EnrollmentDate).ToList();
+            return _dbConnection.EntityModels.OrderByDescending(item => item.EnrollmentDate).ToList();
         }
 
         public void Add(TodolistModel todolist)
         {
-            _db.Todos.Add(todolist);
-            _db.SaveChanges();
+            _dbConnection.EntityModels.Add(todolist);
+            _dbConnection.SaveChanges();
         }
 
         public void Save()
         {
-            _db.SaveChanges();
+            _dbConnection.SaveChanges();
         }
 
         public void Remove(TodolistModel todolist)
         {
-            _db.Todos.Remove(todolist);
-            _db.SaveChanges();
+            _dbConnection.EntityModels.Remove(todolist);
+            _dbConnection.SaveChanges();
         }
 
         public TodolistModel Single(int id)
         {
-            return _db.Todos.Single(a => a.TodolistId == id);
+            return _dbConnection.EntityModels.Single(a => a.TodolistId == id);
         }
     }
 }

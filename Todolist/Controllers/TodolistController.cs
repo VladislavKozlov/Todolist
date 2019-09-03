@@ -14,7 +14,7 @@ namespace Todolist.Controllers
 {
     public class TodolistController : Controller
     {
-        private readonly TaskService _taskService;
+        private readonly IService _taskService;
 
         public TodolistController()
         {
@@ -67,7 +67,7 @@ namespace Todolist.Controllers
                 TodolistModel todolist = new TodolistModel();
                 if (ModelState.IsValid)
                 {
-                    _taskService.InitTodolistModel(todolist, taskInput);
+                    _taskService.InitEntityModel(todolist, taskInput);
                     _taskService.Add(todolist);
                 }
                 else
@@ -110,7 +110,7 @@ namespace Todolist.Controllers
                 var todolistToUpdate = _taskService.Single(todosId);
                 if (ModelState.IsValid)
                 {
-                    _taskService.InitTodolistModel(todolistToUpdate, taskInput);
+                    _taskService.InitEntityModel(todolistToUpdate, taskInput);
                     _taskService.Save();
                 }
                 else

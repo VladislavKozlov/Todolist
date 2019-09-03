@@ -10,13 +10,15 @@ using Todolist.Repositories;
 */
 namespace Todolist.Services
 {
-    public class TaskService
+    public class TaskService : IService
     {
+        private TodolistDbContext _dbConnection = new TodolistDbContext();
         private TaskRepository _taskRepository;
 
         public TaskService()
         {
             _taskRepository = new TaskRepository();
+            _taskRepository.SetDbConnection(_dbConnection);
         }
 
         public List<TodolistModel> GetTasks()
@@ -58,7 +60,7 @@ namespace Todolist.Services
             return null;
         }
 
-        public void InitTodolistModel(TodolistModel todolistModel, TaskInput taskInput)
+        public void InitEntityModel(TodolistModel todolistModel, TaskInput taskInput)
         {
             if (todolistModel != null && taskInput != null)
             {
