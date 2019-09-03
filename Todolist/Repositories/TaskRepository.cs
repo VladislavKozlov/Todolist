@@ -10,36 +10,27 @@ namespace Todolist.Repositories
 {
     public class TaskRepository
     {
-        private TodolistDbContext _db = new TodolistDbContext();
+        private TodolistDbContext _db;
 
         public TaskRepository()
         {
+            _db = new TodolistDbContext();
         }
 
-        public List<TodolistModel> OrderByDescending()
+        public List<TodolistModel> GetTasks()
         {
-            if (_db != null)
-            {
-                return _db.Todos.OrderByDescending(item => item.EnrollmentDate).ToList();
-            }
-            return null;
+            return _db.Todos.OrderByDescending(item => item.EnrollmentDate).ToList();
         }
 
         public void Add(TodolistModel todolist)
         {
-            if (_db != null && todolist != null)
-            {
-                _db.Todos.Add(todolist);
-                _db.SaveChanges();
-            }
+            _db.Todos.Add(todolist);
+            _db.SaveChanges();
         }
 
         public void Save()
         {
-            if (_db != null)
-            {
-                _db.SaveChanges();
-            }
+            _db.SaveChanges();
         }
 
         public void Remove(TodolistModel todolist)
@@ -48,13 +39,9 @@ namespace Todolist.Repositories
             _db.SaveChanges();
         }
 
-        public TodolistModel Find(int id)
+        public TodolistModel Single(int id)
         {
-            if (_db != null && id != 0)
-            {
-                return _db.Todos.Find(id);
-            }
-            return null;
+            return _db.Todos.Single(a => a.TodolistId == id);
         }
     }
 }
