@@ -9,17 +9,13 @@ using Todolist.ContextDb;
 */
 namespace Todolist.Repositories
 {
-    public class TaskRepository
+    public class TaskRepository : ITaskRepository
     {
-        private TodolistDbContext _dbContext;
-
-        public void SetDbConnection(TodolistDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+        private ITodolistDbContext _dbContext;
 
         public TaskRepository()
         {
+            _dbContext = new TodolistDbContext();
         }
 
         public List<TodolistModel> GetTasks()
@@ -35,7 +31,7 @@ namespace Todolist.Repositories
 
         public void Save()
         {
-            _dbContext.SaveChanges();           
+            _dbContext.SaveChanges();
         }
 
         public void Remove(TodolistModel todolist)

@@ -12,13 +12,11 @@ namespace Todolist.Services
 {
     public class TaskService : ITaskService
     {
-        private TodolistDbContext _dbConnection = new TodolistDbContext();
-        private TaskRepository _taskRepository;
+        private ITaskRepository _taskRepository;
 
         public TaskService()
         {
             _taskRepository = new TaskRepository();
-            _taskRepository.SetDbConnection(_dbConnection);
         }
 
         public TasksVm GetTasks()
@@ -33,60 +31,40 @@ namespace Todolist.Services
             if (taskInput != null)
             {
                 TodolistModel todolist = new TodolistModel();
-                InitTodolistModelTaskInput(todolist, taskInput);
+                InitIModel(todolist, taskInput);
                 _taskRepository.Add(todolist);
             }
         }
 
         public void Edit(int id, TaskInput task)
         {
-            TaskInput taskInput = task;                        
+            TaskInput taskInput = task;
             TodolistModel todolistToUpdate = _taskRepository.Get(id);
-            InitTodolistModelTaskInput(todolistToUpdate, taskInput);
+            InitIModel(todolistToUpdate, taskInput);
             _taskRepository.Save();
         }
 
         public void Remove(int id)
         {
-            TodolistModel todolist = _taskRepository.Get(id);            
-            _taskRepository.Remove(todolist);           
+            TodolistModel todolist = _taskRepository.Get(id);
+            _taskRepository.Remove(todolist);
         }
 
         public TaskInput Get(int id)
         {
             TaskInput taskInput = new TaskInput();
             TodolistModel todolist = _taskRepository.Get(id);
-            InitTaskInputTodolistModel(taskInput, todolist);
+            InitIModel(taskInput, todolist);
             return taskInput;
         }
 
-        public void InitTodolistModelTaskInput(TodolistModel todolistModel, TaskInput taskInput)
+        public void InitIModel(IModel model1, IModel model2)
         {
-            if (todolistModel != null && taskInput != null)
+            if (model1 != null && model2 != null)
             {
-                todolistModel.TaskDescription = taskInput.TaskDescription;
-                todolistModel.EnrollmentDate = DateTime.Now;
-                todolistModel.Approved = taskInput.Approved;
-            }
-        }
-
-        public void InitTaskInputTodolistModel(TaskInput taskInput, TodolistModel todolistModel)
-        {
-            if (taskInput != null && todolistModel != null)
-            {
-                taskInput.TaskDescription = todolistModel.TaskDescription;
-                taskInput.EnrollmentDate = DateTime.Now;
-                taskInput.Approved = todolistModel.Approved;
-            }
-        }
-
-        public void InitVTaskVmTaskInput(TaskVm taskVm, TaskInput taskInput)
-        {
-            if (taskVm != null && taskInput != null)
-            {
-                taskVm.TaskDescription = taskInput.TaskDescription;
-                taskVm.EnrollmentDate = DateTime.Now;
-                taskVm.Approved = taskInput.Approved;
+                model1.TaskDescription = model2.TaskDescription;
+                model1.EnrollmentDate = DateTime.Now;
+                model1.Approved = model2.Approved;
             }
         }
     }

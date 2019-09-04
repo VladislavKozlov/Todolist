@@ -8,7 +8,7 @@ using Todolist.ContextDb;
 */
 namespace Todolist.Models
 {
-    public class TaskInput
+    public class TaskInput : IModel
     {
         public int TodolistId { get; set; }
 

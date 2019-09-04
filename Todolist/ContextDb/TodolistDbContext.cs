@@ -6,8 +6,13 @@
 */
 namespace Todolist.ContextDb
 {
-    public class TodolistDbContext : DbContext
+    public class TodolistDbContext : DbContext, ITodolistDbContext
     {
         public DbSet<TodolistModel> Todolists { get; set; }
+
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
+        }
     }
 }

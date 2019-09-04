@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using Todolist.ContextDb;
 using Todolist.Models;
 using Todolist.Services;
 using Todolist.ViewModels;
@@ -61,7 +60,7 @@ namespace Todolist.Controllers
         public JsonResult Create(TaskInput taskInput)
         {
             try
-            {                
+            {
                 if (ModelState.IsValid)
                 {
                     _taskService.Add(taskInput);
@@ -80,10 +79,10 @@ namespace Todolist.Controllers
         }
 
         public ActionResult Edit(int id)
-        {                        
+        {
             TaskInput taskInput = _taskService.Get(id);
             TaskVm taskVm = new TaskVm();
-            _taskService.InitVTaskVmTaskInput(taskVm, taskInput);
+            _taskService.InitIModel(taskVm, taskInput);
             taskVm.Title = "Редактирование задачи";
             return PartialView("_Edit", taskVm);
         }
@@ -93,7 +92,7 @@ namespace Todolist.Controllers
         public JsonResult Edit(int id, TaskInput taskInput)
         {
             try
-            {                              
+            {
                 if (ModelState.IsValid)
                 {
                     _taskService.Edit(id, taskInput);
@@ -112,10 +111,10 @@ namespace Todolist.Controllers
         }
 
         public ActionResult Delete(int id)
-        {           
+        {
             TaskInput taskInput = _taskService.Get(id);
             TaskVm taskVm = new TaskVm();
-            _taskService.InitVTaskVmTaskInput(taskVm, taskInput);
+            _taskService.InitIModel(taskVm, taskInput);
             taskVm.Title = "Удаление задачи";
             return PartialView("_Delete", taskVm);
         }
@@ -125,7 +124,7 @@ namespace Todolist.Controllers
         public JsonResult DeleteTask(int id)
         {
             try
-            {                
+            {
                 _taskService.Remove(id);
             }
             catch (Exception)

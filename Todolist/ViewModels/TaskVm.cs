@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Todolist.ContextDb;
+using Todolist.Models;
 
 /*
  * 
@@ -8,10 +9,10 @@ using Todolist.ContextDb;
 */
 namespace Todolist.ViewModels
 {
-    public class TaskVm
+    public class TaskVm : IModel
     {
         public int TodolistId { get; set; }
-        
+
         [Display(Name = "Описание задачи")]
         public string TaskDescription { get; set; }
 
