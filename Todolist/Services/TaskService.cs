@@ -39,10 +39,9 @@ namespace Todolist.Services
         public void Edit(int id, TaskInput task)
         {
             if (task != null)
-            {
-                TaskInput taskInput = task;
+            {                
                 TodolistModel todolistToUpdate = _taskRepository.Get(id);
-                InitIModel(todolistToUpdate, taskInput);
+                InitIModel(todolistToUpdate, task);
                 _taskRepository.Save();
             }
         }
