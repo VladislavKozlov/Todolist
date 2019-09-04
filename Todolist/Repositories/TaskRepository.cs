@@ -11,11 +11,11 @@ namespace Todolist.Repositories
 {
     public class TaskRepository
     {
-        private TodolistDbContext _dbConnection;
+        private TodolistDbContext _dbContext;
 
-        public void SetDbConnection(TodolistDbContext dbConnection)
+        public void SetDbConnection(TodolistDbContext dbContext)
         {
-            _dbConnection = dbConnection;
+            _dbContext = dbContext;
         }
 
         public TaskRepository()
@@ -24,29 +24,29 @@ namespace Todolist.Repositories
 
         public List<TodolistModel> GetTasks()
         {
-            return _dbConnection.EntityModels.OrderByDescending(item => item.EnrollmentDate).ToList();
+            return _dbContext.Todolists.OrderByDescending(item => item.EnrollmentDate).ToList();
         }
 
         public void Add(TodolistModel todolist)
         {
-            _dbConnection.EntityModels.Add(todolist);
-            _dbConnection.SaveChanges();
+            _dbContext.Todolists.Add(todolist);
+            _dbContext.SaveChanges();
         }
 
         public void Save()
         {
-            _dbConnection.SaveChanges();
+            _dbContext.SaveChanges();           
         }
 
         public void Remove(TodolistModel todolist)
         {
-            _dbConnection.EntityModels.Remove(todolist);
-            _dbConnection.SaveChanges();
+            _dbContext.Todolists.Remove(todolist);
+            _dbContext.SaveChanges();
         }
 
-        public TodolistModel Single(int id)
+        public TodolistModel Get(int id)
         {
-            return _dbConnection.EntityModels.Single(a => a.TodolistId == id);
+            return _dbContext.Todolists.SingleOrDefault(a => a.TodolistId == id);
         }
     }
 }

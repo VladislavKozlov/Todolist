@@ -14,7 +14,7 @@ namespace Todolist.Controllers
 {
     public class TodolistController : Controller
     {
-        private readonly IService _taskService;
+        private readonly ITaskService _taskService;
 
         public TodolistController()
         {
@@ -26,8 +26,7 @@ namespace Todolist.Controllers
             try
             {
                 var tasks = _taskService.GetTasks();
-                TasksVm tasksVm = new TasksVm { Tasks = tasks };
-                return View(tasksVm);
+                return View(tasks);
             }
             catch (Exception)
             {
@@ -41,8 +40,7 @@ namespace Todolist.Controllers
             try
             {
                 var tasks = _taskService.GetTasks();
-                TasksVm tasksVm = new TasksVm { Tasks = tasks };
-                return PartialView("_PartialContent", tasksVm);
+                return PartialView("_PartialContent", tasks);
             }
             catch (Exception)
             {
@@ -63,12 +61,10 @@ namespace Todolist.Controllers
         public JsonResult Create(TaskInput taskInput)
         {
             try
-            {
-                TodolistModel todolist = new TodolistModel();
+            {                
                 if (ModelState.IsValid)
                 {
-                    _taskService.InitEntityModel(todolist, taskInput);
-                    _taskService.Add(todolist);
+                    _taskService.Add(taskInput);
                 }
                 else
                 {
@@ -83,35 +79,24 @@ namespace Todolist.Controllers
             }
         }
 
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return View("~/Error");
-            }
-            int todosId = (int)id;
-            TodolistModel todolist = _taskService.Single(todosId);
-            if (todolist == null)
-            {
-                return View("~/Error");
-            }
-            TaskVm taskVm = new TaskVm(todolist);
+        public ActionResult Edit(int id)
+        {                        
+            TaskInput taskInput = _taskService.Get(id);
+            TaskVm taskVm = new TaskVm();
+            _taskService.InitVTaskVmTaskInput(taskVm, taskInput);
             taskVm.Title = "Редактирование задачи";
             return PartialView("_Edit", taskVm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Edit(int? id, TaskInput taskInput)
+        public JsonResult Edit(int id, TaskInput taskInput)
         {
             try
-            {
-                int todosId = (int)id;
-                var todolistToUpdate = _taskService.Single(todosId);
+            {                              
                 if (ModelState.IsValid)
                 {
-                    _taskService.InitEntityModel(todolistToUpdate, taskInput);
-                    _taskService.Save();
+                    _taskService.Edit(id, taskInput);
                 }
                 else
                 {
@@ -126,31 +111,22 @@ namespace Todolist.Controllers
             }
         }
 
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return View("~/Error");
-            }
-            int todosId = (int)id;
-            TodolistModel todolist = _taskService.Single(todosId);
-            if (todolist == null)
-            {
-                return View("~/Error");
-            }
-            TaskVm taskVm = new TaskVm(todolist);
+        public ActionResult Delete(int id)
+        {           
+            TaskInput taskInput = _taskService.Get(id);
+            TaskVm taskVm = new TaskVm();
+            _taskService.InitVTaskVmTaskInput(taskVm, taskInput);
             taskVm.Title = "Удаление задачи";
             return PartialView("_Delete", taskVm);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public JsonResult Delete(int id)
+        public JsonResult DeleteTask(int id)
         {
             try
-            {
-                TodolistModel todolist = _taskService.Single(id);
-                _taskService.Remove(todolist);
+            {                
+                _taskService.Remove(id);
             }
             catch (Exception)
             {

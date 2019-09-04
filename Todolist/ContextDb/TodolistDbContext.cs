@@ -8,6 +8,6 @@ namespace Todolist.ContextDb
 {
     public class TodolistDbContext : DbContext
     {
-        public DbSet<TodolistModel> EntityModels { get; set; }
+        public DbSet<TodolistModel> Todolists { get; set; }
     }
 }

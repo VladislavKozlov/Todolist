@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using Todolist.ContextDb;
 using Todolist.Models;
 using Todolist.Repositories;
+using Todolist.ViewModels;
 
 /*
  * 
@@ -10,7 +10,7 @@ using Todolist.Repositories;
 */
 namespace Todolist.Services
 {
-    public class TaskService : IService
+    public class TaskService : ITaskService
     {
         private TodolistDbContext _dbConnection = new TodolistDbContext();
         private TaskRepository _taskRepository;
@@ -21,52 +21,72 @@ namespace Todolist.Services
             _taskRepository.SetDbConnection(_dbConnection);
         }
 
-        public List<TodolistModel> GetTasks()
+        public TasksVm GetTasks()
         {
-            if (_taskRepository != null)
-            {
-                return _taskRepository.GetTasks();
-            }
-            return null;
+            var tasks = _taskRepository.GetTasks();
+            TasksVm tasksVm = new TasksVm { Tasks = tasks };
+            return tasksVm;
         }
 
-        public void Add(TodolistModel todolist)
+        public void Add(TaskInput taskInput)
         {
-            if (todolist != null)
+            if (taskInput != null)
             {
+                TodolistModel todolist = new TodolistModel();
+                InitTodolistModelTaskInput(todolist, taskInput);
                 _taskRepository.Add(todolist);
             }
         }
 
-        public void Save()
+        public void Edit(int id, TaskInput task)
         {
+            TaskInput taskInput = task;                        
+            TodolistModel todolistToUpdate = _taskRepository.Get(id);
+            InitTodolistModelTaskInput(todolistToUpdate, taskInput);
             _taskRepository.Save();
         }
 
-        public void Remove(TodolistModel todolist)
+        public void Remove(int id)
         {
-            if (todolist != null)
-            {
-                _taskRepository.Remove(todolist);
-            }
+            TodolistModel todolist = _taskRepository.Get(id);            
+            _taskRepository.Remove(todolist);           
         }
 
-        public TodolistModel Single(int id)
+        public TaskInput Get(int id)
         {
-            if (id != 0)
-            {
-                return _taskRepository.Single(id);
-            }
-            return null;
+            TaskInput taskInput = new TaskInput();
+            TodolistModel todolist = _taskRepository.Get(id);
+            InitTaskInputTodolistModel(taskInput, todolist);
+            return taskInput;
         }
 
-        public void InitEntityModel(TodolistModel todolistModel, TaskInput taskInput)
+        public void InitTodolistModelTaskInput(TodolistModel todolistModel, TaskInput taskInput)
         {
             if (todolistModel != null && taskInput != null)
             {
                 todolistModel.TaskDescription = taskInput.TaskDescription;
                 todolistModel.EnrollmentDate = DateTime.Now;
                 todolistModel.Approved = taskInput.Approved;
+            }
+        }
+
+        public void InitTaskInputTodolistModel(TaskInput taskInput, TodolistModel todolistModel)
+        {
+            if (taskInput != null && todolistModel != null)
+            {
+                taskInput.TaskDescription = todolistModel.TaskDescription;
+                taskInput.EnrollmentDate = DateTime.Now;
+                taskInput.Approved = todolistModel.Approved;
+            }
+        }
+
+        public void InitVTaskVmTaskInput(TaskVm taskVm, TaskInput taskInput)
+        {
+            if (taskVm != null && taskInput != null)
+            {
+                taskVm.TaskDescription = taskInput.TaskDescription;
+                taskVm.EnrollmentDate = DateTime.Now;
+                taskVm.Approved = taskInput.Approved;
             }
         }
     }
