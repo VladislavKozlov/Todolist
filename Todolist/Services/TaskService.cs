@@ -1,4 +1,5 @@
-﻿using Todolist.ContextDb;
+﻿using System;
+using Todolist.ContextDb;
 using Todolist.Models;
 using Todolist.Repositories;
 using Todolist.ViewModels;
@@ -27,14 +28,15 @@ namespace Todolist.Services
 
         public void Add(TaskInput taskInput)
         {
-            var todolist = taskInput.ToEntity();
+            TodolistModel todolist = new TodolistModel();
+            InitTodolistModel(todolist, taskInput);
             _taskRepository.Add(todolist);
         }
 
         public void Edit(TaskInput taskInput)
         {
             TodolistModel todolistToUpdate = _taskRepository.Get(taskInput.TodolistId);
-            todolistToUpdate = taskInput.ToEntity();
+            InitTodolistModel(todolistToUpdate, taskInput);
             _taskRepository.Save();
         }
 
@@ -49,6 +51,14 @@ namespace Todolist.Services
             TodolistModel todolist = _taskRepository.Get(id);
             TaskVm taskVm = new TaskVm(todolist);
             return taskVm;
+        }
+
+        public void InitTodolistModel(TodolistModel todolist, TaskInput taskInput)
+        {
+            todolist.TodolistId = taskInput.TodolistId;
+            todolist.TaskDescription = taskInput.TaskDescription;
+            todolist.EnrollmentDate = DateTime.Now;
+            todolist.Approved = taskInput.Approved;
         }
     }
 }

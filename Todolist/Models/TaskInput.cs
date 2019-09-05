@@ -31,16 +31,5 @@ namespace Todolist.Models
             EnrollmentDate = todolistModel.EnrollmentDate;
             Approved = todolistModel.Approved;
         }
-
-        public TodolistModel ToEntity()
-        {
-            return new TodolistModel
-            {
-                TodolistId = TodolistId,
-                TaskDescription = TaskDescription,
-                EnrollmentDate = EnrollmentDate,
-                Approved = Approved,
-            };
-        }
     }
 }
