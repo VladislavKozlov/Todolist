@@ -8,7 +8,7 @@ using Todolist.ContextDb;
 */
 namespace Todolist.Models
 {
-    public class TaskInput : IModel
+    public class TaskInput
     {
         public int TodolistId { get; set; }
 
@@ -30,6 +30,17 @@ namespace Todolist.Models
             TaskDescription = todolistModel.TaskDescription;
             EnrollmentDate = todolistModel.EnrollmentDate;
             Approved = todolistModel.Approved;
+        }
+
+        public TodolistModel ToEntity()
+        {
+            return new TodolistModel
+            {
+                TodolistId = TodolistId,
+                TaskDescription = TaskDescription,
+                EnrollmentDate = EnrollmentDate,
+                Approved = Approved,
+            };
         }
     }
 }

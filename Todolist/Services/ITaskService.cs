@@ -9,11 +9,10 @@ namespace Todolist.Services
 {
     public interface ITaskService
     {
-        void InitIModel(IModel model1, IModel model2);
         TasksVm GetTasks();
         void Add(TaskInput taskInput);
-        void Edit(int id, TaskInput taskInput);
+        void Edit(TaskInput taskInput);
         void Remove(int id);
-        TaskInput Get(int id);
+        TaskVm Get(int id);
     }
 }

@@ -80,22 +80,20 @@ namespace Todolist.Controllers
 
         public ActionResult Edit(int id)
         {
-            TaskInput taskInput = _taskService.Get(id);
-            TaskVm taskVm = new TaskVm();
-            _taskService.InitIModel(taskVm, taskInput);
+            TaskVm taskVm = _taskService.Get(id);
             taskVm.Title = "Редактирование задачи";
             return PartialView("_Edit", taskVm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Edit(int id, TaskInput taskInput)
+        public JsonResult Edit(TaskInput taskInput)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _taskService.Edit(id, taskInput);
+                    _taskService.Edit(taskInput);
                 }
                 else
                 {
@@ -112,9 +110,7 @@ namespace Todolist.Controllers
 
         public ActionResult Delete(int id)
         {
-            TaskInput taskInput = _taskService.Get(id);
-            TaskVm taskVm = new TaskVm();
-            _taskService.InitIModel(taskVm, taskInput);
+            TaskVm taskVm = _taskService.Get(id);
             taskVm.Title = "Удаление задачи";
             return PartialView("_Delete", taskVm);
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Todolist.Models;
 
 /*
  * 
@@ -9,7 +8,7 @@ using Todolist.Models;
 */
 namespace Todolist.ContextDb
 {
-    public class TodolistModel : IModel
+    public class TodolistModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

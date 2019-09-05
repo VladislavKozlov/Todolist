@@ -1,5 +1,4 @@
-﻿using System;
-using Todolist.ContextDb;
+﻿using Todolist.ContextDb;
 using Todolist.Models;
 using Todolist.Repositories;
 using Todolist.ViewModels;
@@ -28,22 +27,15 @@ namespace Todolist.Services
 
         public void Add(TaskInput taskInput)
         {
-            if (taskInput != null)
-            {
-                TodolistModel todolist = new TodolistModel();
-                InitIModel(todolist, taskInput);
-                _taskRepository.Add(todolist);
-            }
+            var todolist = taskInput.ToEntity();
+            _taskRepository.Add(todolist);
         }
 
-        public void Edit(int id, TaskInput task)
+        public void Edit(TaskInput taskInput)
         {
-            if (task != null)
-            {                
-                TodolistModel todolistToUpdate = _taskRepository.Get(id);
-                InitIModel(todolistToUpdate, task);
-                _taskRepository.Save();
-            }
+            TodolistModel todolistToUpdate = _taskRepository.Get(taskInput.TodolistId);
+            todolistToUpdate = taskInput.ToEntity();
+            _taskRepository.Save();
         }
 
         public void Remove(int id)
@@ -52,22 +44,11 @@ namespace Todolist.Services
             _taskRepository.Remove(todolist);
         }
 
-        public TaskInput Get(int id)
+        public TaskVm Get(int id)
         {
-            TaskInput taskInput = new TaskInput();
             TodolistModel todolist = _taskRepository.Get(id);
-            InitIModel(taskInput, todolist);
-            return taskInput;
-        }
-
-        public void InitIModel(IModel model1, IModel model2)
-        {
-            if (model1 != null && model2 != null)
-            {
-                model1.TaskDescription = model2.TaskDescription;
-                model1.EnrollmentDate = DateTime.Now;
-                model1.Approved = model2.Approved;
-            }
+            TaskVm taskVm = new TaskVm(todolist);
+            return taskVm;
         }
     }
 }
