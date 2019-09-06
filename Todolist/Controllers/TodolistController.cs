@@ -15,9 +15,9 @@ namespace Todolist.Controllers
     {
         private readonly ITaskService _taskService;
 
-        public TodolistController()
+        public TodolistController(ITaskService taskService)
         {
-            _taskService = new TaskService();
+            _taskService = taskService;
         }
 
         public ActionResult Index()

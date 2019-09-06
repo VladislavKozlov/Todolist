@@ -13,9 +13,9 @@ namespace Todolist.Repositories
     {
         private ITodolistDbContext _dbContext;
 
-        public TaskRepository()
+        public TaskRepository(ITodolistDbContext dbContext)
         {
-            _dbContext = new TodolistDbContext();
+            _dbContext = dbContext;
         }
 
         public List<TodolistModel> GetTasks()

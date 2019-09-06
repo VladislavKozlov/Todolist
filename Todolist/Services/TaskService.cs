@@ -13,9 +13,9 @@ namespace Todolist.Services
     {
         private ITaskRepository _taskRepository;
 
-        public TaskService()
+        public TaskService(ITaskRepository taskRepository)
         {
-            _taskRepository = new TaskRepository();
+            _taskRepository = taskRepository;
         }
 
         public TasksVm GetTasks()
