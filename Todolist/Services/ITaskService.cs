@@ -1,5 +1,4 @@
-﻿using Todolist.ContextDb;
-using Todolist.Models;
+﻿using Todolist.Models;
 using Todolist.ViewModels;
 
 /*
@@ -10,7 +9,6 @@ namespace Todolist.Services
 {
     public interface ITaskService
     {
-        void InitTodolistModel(TodolistModel todolist, TaskInput taskInput);
         TasksVm GetTasks();
         void Add(TaskInput taskInput);
         void Edit(TaskInput taskInput);

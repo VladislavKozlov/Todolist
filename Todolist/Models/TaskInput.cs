@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Todolist.ContextDb;
 
 /*
  * 
@@ -19,17 +18,5 @@ namespace Todolist.Models
         public DateTime EnrollmentDate { get; set; }
 
         public bool Approved { get; set; }
-
-        public TaskInput()
-        {
-        }
-
-        public TaskInput(TodolistModel todolistModel)
-        {
-            TodolistId = todolistModel.TodolistId;
-            TaskDescription = todolistModel.TaskDescription;
-            EnrollmentDate = todolistModel.EnrollmentDate;
-            Approved = todolistModel.Approved;
-        }
     }
 }
