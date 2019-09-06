@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Todolist.ContextDb;
@@ -21,6 +22,16 @@ namespace Todolist.Repositories
         public List<TodolistModel> GetTasks()
         {
             return _dbContext.Todolists.OrderByDescending(item => item.EnrollmentDate).ToList();
+        }
+        
+        public bool Search(string taskDescription)
+        {            
+            TodolistModel todolist = _dbContext.Todolists.Where(a => a.TaskDescription == taskDescription).FirstOrDefault();
+            if (todolist != null)
+            {
+               return true;               
+            }            
+            return false;
         }
 
         public void Add(TodolistModel todolist)

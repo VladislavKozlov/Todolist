@@ -25,6 +25,11 @@ namespace Todolist.Services
             return tasksVm;
         }
 
+        public bool SearchTaskDescription(string taskDescription)
+        {            
+            return _taskRepository.Search(taskDescription);
+        }
+
         public void Add(TaskInput taskInput)
         {
             TodolistModel todolist = new TodolistModel();
