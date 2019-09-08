@@ -4,7 +4,6 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Todolist.ContextDb;
-using Todolist.Controllers;
 using Todolist.Repositories;
 using Todolist.Services;
 
@@ -22,7 +21,8 @@ namespace Todolist
             builder.RegisterType<TodolistDbContext>().As<ITodolistDbContext>();
             builder.RegisterType<TaskRepository>().As<ITaskRepository>();
             builder.RegisterType<TaskService>().As<ITaskService>();
-            builder.RegisterType<TodolistController>().InstancePerRequest();
+            //builder.RegisterModelBinders(typeof(MvcApplication).Assembly);         
+            builder.RegisterControllers(typeof(MvcApplication).Assembly);
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
 

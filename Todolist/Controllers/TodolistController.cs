@@ -13,8 +13,6 @@ namespace Todolist.Controllers
 {
     public class TodolistController : Controller
     {
-        private bool _test = true;
-        
         private readonly ITaskService _taskService;
 
         public TodolistController(ITaskService taskService)
@@ -62,13 +60,13 @@ namespace Todolist.Controllers
         public JsonResult Create(TaskInput taskInput)
         {
             try
-            {                
+            {
                 if (_taskService.SearchTaskDescription(taskInput.TaskDescription))
-                {                    
+                {
                     return Json(new { EnableError = true, ErrorMsg = "Такая задача уже существует, введите другое название!" });
                 }
                 if (ModelState.IsValid)
-                {                   
+                {
                     _taskService.Add(taskInput);
                 }
                 else

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Todolist.Models;
 
 /*
  * 
@@ -22,21 +21,5 @@ namespace Todolist.ContextDb
         public DateTime EnrollmentDate { get; set; }
 
         public bool Approved { get; set; }
-
-        public void InitEntity(TaskInput taskInput)
-        {
-            TodolistId = taskInput.TodolistId;
-            TaskDescription = taskInput.TaskDescription;
-            EnrollmentDate = DateTime.Now;
-            Approved = taskInput.Approved;
-        }
-
-        public void InitEntity(TaskInput taskInput, DateTime enrollmentDate)
-        {
-            TodolistId = taskInput.TodolistId;
-            TaskDescription = taskInput.TaskDescription;
-            EnrollmentDate = enrollmentDate;
-            Approved = taskInput.Approved;
-        }
     }
 }

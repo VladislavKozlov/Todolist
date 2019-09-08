@@ -1,7 +1,9 @@
-﻿using Todolist.ContextDb;
+﻿using System;
+using Todolist.ContextDb;
 using Todolist.Models;
 using Todolist.Repositories;
 using Todolist.ViewModels;
+
 
 /*
  * 
@@ -26,21 +28,23 @@ namespace Todolist.Services
         }
 
         public bool SearchTaskDescription(string taskDescription)
-        {            
+        {
             return _taskRepository.Search(taskDescription);
         }
 
         public void Add(TaskInput taskInput)
         {
             TodolistModel todolist = new TodolistModel();
-            todolist.InitEntity(taskInput);
+            todolist.EnrollmentDate = DateTime.Now;
+            todolist.TaskDescription = taskInput.TaskDescription;
             _taskRepository.Add(todolist);
         }
 
         public void Edit(TaskInput taskInput)
         {
             TodolistModel todolistToUpdate = _taskRepository.Get(taskInput.TodolistId);
-            todolistToUpdate.InitEntity(taskInput, taskInput.EnrollmentDate);
+            todolistToUpdate.TaskDescription = taskInput.TaskDescription;
+            todolistToUpdate.Approved = taskInput.Approved;
             _taskRepository.Save();
         }
 
