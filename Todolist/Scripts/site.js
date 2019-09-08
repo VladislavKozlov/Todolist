@@ -40,6 +40,7 @@ function OnAjaxRequest(result) {
     }
     if (result.EnableError) {
         $("#Results").html(result.ErrorMsg);
+        lightBorderError();
     }
 }
 
@@ -53,6 +54,10 @@ function alertBootstrap(mess) {
     window.setTimeout(function () {
         $("#Alert").addClass("hide");
     }, 3000);
+}
+
+function lightBorderError() {
+    $("#ErrorMsg").removeClass("has-success has-error").addClass("has-error");
 }
 
 
