@@ -14,6 +14,6 @@ namespace Todolist.Services
         void Edit(TaskInput taskInput);
         void Remove(int id);
         TaskVm Get(int id);
-        bool SearchTaskDescription(string taskDescription);
+        bool SearchTaskDescription(string taskDescription, int todolistIdOrZero);
     }
 }

@@ -27,9 +27,9 @@ namespace Todolist.Services
             return tasksVm;
         }
 
-        public bool SearchTaskDescription(string taskDescription)
+        public bool SearchTaskDescription(string taskDescription, int todolistIdOrZero)
         {
-            return _taskRepository.Search(taskDescription);
+            return _taskRepository.Search(taskDescription, todolistIdOrZero);
         }
 
         public void Add(TaskInput taskInput)

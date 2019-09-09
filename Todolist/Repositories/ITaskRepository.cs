@@ -14,6 +14,6 @@ namespace Todolist.Repositories
         void Save();
         void Remove(TodolistModel todolist);
         TodolistModel Get(int id);
-        bool Search(string taskDescription);
+        bool Search(string taskDescription, int todolistIdOrZero);
     }
 }

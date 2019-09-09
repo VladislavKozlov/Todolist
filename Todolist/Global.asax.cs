@@ -1,11 +1,9 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Todolist.ContextDb;
-using Todolist.Repositories;
-using Todolist.Services;
 
 /*
  * 
@@ -18,11 +16,8 @@ namespace Todolist
         protected void Application_Start()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<TodolistDbContext>().As<ITodolistDbContext>();
-            builder.RegisterType<TaskRepository>().As<ITaskRepository>();
-            builder.RegisterType<TaskService>().As<ITaskService>();
-            //builder.RegisterModelBinders(typeof(MvcApplication).Assembly);         
-            builder.RegisterControllers(typeof(MvcApplication).Assembly);
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsImplementedInterfaces();
+            builder.RegisterControllers(Assembly.GetExecutingAssembly());
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
 

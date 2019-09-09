@@ -61,7 +61,7 @@ namespace Todolist.Controllers
         {
             try
             {
-                if (_taskService.SearchTaskDescription(taskInput.TaskDescription))
+                if (_taskService.SearchTaskDescription(taskInput.TaskDescription, 0))
                 {
                     return Json(new { EnableError = true, ErrorMsg = "Такая задача уже существует, введите другое название!" });
                 }
@@ -95,6 +95,10 @@ namespace Todolist.Controllers
         {
             try
             {
+                if (_taskService.SearchTaskDescription(taskInput.TaskDescription, taskInput.TodolistId))
+                {
+                    return Json(new { EnableError = true, ErrorMsg = "Такая задача уже существует, введите другое название!" });
+                }
                 if (ModelState.IsValid)
                 {
                     _taskService.Edit(taskInput);
