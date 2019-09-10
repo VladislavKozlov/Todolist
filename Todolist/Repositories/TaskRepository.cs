@@ -1,9 +1,5 @@
-﻿//using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Collections.Generic;
 using System.Data;
-//using System.Data.SqlClient;
 using System.Linq;
 using Todolist.ContextDb;
 
@@ -16,12 +12,10 @@ namespace Todolist.Repositories
     public class TaskRepository : ITaskRepository
     {
         private ITodolistDbContext _dbContext;
-        private string tableName;
 
         public TaskRepository(ITodolistDbContext dbContext)
         {
             _dbContext = dbContext;
-            tableName = Convert.ToString(ConfigurationManager.AppSettings["TableName"]);
         }
 
         public List<TodolistModel> GetTasks()
@@ -31,14 +25,9 @@ namespace Todolist.Repositories
 
         public bool Search(string taskDescription, int todolistIdOrZero)
         {
-            int countResult = _dbContext.Todolists.Count(a => a.TaskDescription == taskDescription);
-            //string sql = "SELECT COUNT * FROM TodolistModels WHERE TaskDescription == @taskDescription";
-            //"SELECT COUNT(*) FROM TodolistModels WHERE TaskDescription LIKE %TaskDescription% == @taskDescription";
-            //var sqlParameter = new SqlParameter("@taskDescription", taskDescription);
-            //var countResultSql = _dbContext.Todolists.FromSql(sql, sqlParameter).ToString();
-            //int countResult = Convert.ToInt32(countResultStr);            
             if (todolistIdOrZero == 0)
             {
+                int countResult = _dbContext.Todolists.Count(a => a.TaskDescription.ToLower() == taskDescription.ToLower());
                 if (countResult >= 1)
                 {
                     return true;
@@ -50,7 +39,7 @@ namespace Todolist.Repositories
             }
             else
             {
-                int countResultAndId = _dbContext.Todolists.Count(a => a.TaskDescription == taskDescription && a.TodolistId != todolistIdOrZero);
+                int countResultAndId = _dbContext.Todolists.Count(a => a.TaskDescription.ToLower() == taskDescription.ToLower() && a.TodolistId != todolistIdOrZero);
                 if (countResultAndId >= 1)
                 {
                     return true;
