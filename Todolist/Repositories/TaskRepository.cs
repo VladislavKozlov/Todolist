@@ -28,26 +28,12 @@ namespace Todolist.Repositories
             if (todolistIdOrZero == 0)
             {
                 int countResult = _dbContext.Todolists.Count(a => a.TaskDescription.ToLower() == taskDescription.ToLower());
-                if (countResult >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return countResult >= 1 ? true : false;
             }
             else
             {
                 int countResultAndId = _dbContext.Todolists.Count(a => a.TaskDescription.ToLower() == taskDescription.ToLower() && a.TodolistId != todolistIdOrZero);
-                if (countResultAndId >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return countResultAndId >= 1 ? true : false;
             }
         }
 
