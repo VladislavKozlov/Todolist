@@ -17,9 +17,10 @@
         <div class="modal-body">
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.Approved)
+            @Html.HiddenFor(m => m.TodolistId, new { htmlAttributes = new { @id = "TodolistId" } })
             <div class="form-group" id="ErrorMsg">
                 @Html.LabelFor(m => m.TaskDescription)
-                @Html.EditorFor(m => m.TaskDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.TaskDescription, new { htmlAttributes = new { @class = "form-control", @id = "TaskDescription" } })
                 <div id="Results" class="text-success"></div>
             </div>
         </div>

@@ -48,6 +48,21 @@ namespace Todolist.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult CheckCoincidences(string taskDescription)//Request.Params["taskDescription"];
+        {//JsonRequestBehavior request
+         //string taskDescription = request.ToString();
+
+            //string taskDescription = Request.Params["taskDescription"];
+            //string todolistId = Request.Params["todolistId"];
+            if (_taskService.SearchTaskDescription(taskDescription, 0))
+            {
+                return Json(new { EnableError = true, ErrorMsg = "Такая задача уже существует, введите другое название!" });
+            }
+            return Json(new { EnableSuccess = true, SuccessMsg = "Запрос успешно обработан!" });
+        }
+
         public ActionResult Create()
         {
             TaskVm taskVm = new TaskVm();
