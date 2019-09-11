@@ -1,39 +1,43 @@
 ﻿@using Todolist.ViewModels
 @model TasksVm
 <table class="table">
-    <tr>
-        <th>
-            Описание задачи
-        </th>
-        <th>
-            Дата
-        </th>
-        <th>
-            Статус
-        </th>
-        <th></th>
-    </tr>
-    @if (Model != null)
-    {
-        foreach (var item in Model.Tasks)
+    <thead>
+        <tr>
+            <td>
+                Описание задачи
+            </td>
+            <td>
+                Дата
+            </td>
+            <td>
+                Статус
+            </td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
         {
-            <tr class="@(!item.Approved ? "" : "approved-task")">
-                <td>
-                    @item.TaskDescription
-                </td>
-                <td>
-                    @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
-                </td>
-                <td>
-                    @(!item.Approved ? "В процессе" : "Решена")
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId, }, new { @class = "ajaxLink" }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
-                </td>
-            </tr>
+            foreach (var item in Model.Tasks)
+            {
+                <tr class="@(!item.Approved ? "" : "approved-task")">
+                    <td>
+                        @item.TaskDescription
+                    </td>
+                    <td>
+                        @item.EnrollmentDate.ToString(string.Format("dd/MM/yyyy HH:mm"))
+                    </td>
+                    <td>
+                        @(!item.Approved ? "В процессе" : "Решена")
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId, }, new { @class = "ajaxLink" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
+                    </td>
+                </tr>
+            }
         }
-    }
+    </tbody>
 </table>
 <div class="text-info">
     <h4>@ViewBag.Error</h4>

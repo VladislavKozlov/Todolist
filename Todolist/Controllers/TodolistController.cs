@@ -49,18 +49,13 @@ namespace Todolist.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public JsonResult CheckCoincidences(string taskDescription)//Request.Params["taskDescription"];
-        {//JsonRequestBehavior request
-         //string taskDescription = request.ToString();
-
-            //string taskDescription = Request.Params["taskDescription"];
-            //string todolistId = Request.Params["todolistId"];
-            if (_taskService.SearchTaskDescription(taskDescription, 0))
+        public JsonResult CheckCoincidences(string taskDescription, int taskId)
+        {
+            if (_taskService.SearchTaskDescription(taskDescription, taskId))
             {
                 return Json(new { EnableError = true, ErrorMsg = "Такая задача уже существует, введите другое название!" });
             }
-            return Json(new { EnableSuccess = true, SuccessMsg = "Запрос успешно обработан!" });
+            return Json(new { EnableSuccess = true, SuccessMsg = "" });
         }
 
         public ActionResult Create()

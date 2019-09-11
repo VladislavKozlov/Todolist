@@ -19,8 +19,7 @@
 </div>
 <script src="@Url.Content("~/Scripts/site.js")"></script>
 <script>
-    initPartialContentUrl('@Url.Action("PartialContent", "Todolist")');
-    initCheckCoincidencesUrl('@Url.Action("CheckCoincidences", "Todolist")');
+    initUrls('@Url.Action("PartialContent", "Todolist")', '@Url.Action("CheckCoincidences", "Todolist")');
 </script>
 
 

@@ -16,11 +16,11 @@
     {
         <div class="modal-body">
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.TodolistId, new { htmlAttributes = new { @id = "TodolistId" } })
+            @Html.HiddenFor(m => m.TodolistId)
             @Html.HiddenFor(m => m.EnrollmentDate)
             <div class="form-group" id="ErrorMsg">
                 @Html.LabelFor(m => m.TaskDescription)
-                @Html.EditorFor(m => m.TaskDescription, new { htmlAttributes = new { @class = "form-control", @id = "TaskDescription" } })
+                @Html.EditorFor(m => m.TaskDescription, new { htmlAttributes = new { @class = "form-control" } })
                 <div id="Results" class="text-success"></div>
             </div>
             <div class="checkbox">

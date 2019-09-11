@@ -1,25 +1,32 @@
 var _partialContentUrl;
 var _checkCoincidencesUrl;
 
-$(document).ready(function () {
-    $.ajaxSetup({ cache: false });
-    $(document).on("click", ".ajaxLink", function (e) {
-        e.preventDefault();
-        $.get(this.href, function (data) {
-            $("#DialogContent").html(data);
-            $("#ModDialog").modal("show");
-            keydownRequest();
-        });
-    });
-    $("#AddTask").click(function (e) {
-        e.preventDefault();
-        $.get($(this).data("url"), function (data) {
-            $("#DialogContent").html(data);
-            $("#ModDialog").modal("show");
-            keydownRequest();
-        });
+function initUrls(partialContentUrl, checkCoincidencesUrl) {
+    _partialContentUrl = partialContentUrl;
+    _checkCoincidencesUrl = checkCoincidencesUrl;
+}
+
+$(document).on("click", "#AddTask", function (e) {
+    e.preventDefault();
+    $.get($(this).data("url"), function (data) {
+        $("#DialogContent").html(data);
+        $("#ModDialog").modal("show");
     });
 });
+
+$(document).on("click", ".ajaxLink", function (e) {
+    e.preventDefault();
+    $.get(this.href, function (data) {
+        $("#DialogContent").html(data);
+        $("#ModDialog").modal("show");
+    });
+});
+
+$(document).on("input", "#TaskDescription", function (e) {
+    e.preventDefault();
+    checkCoincidences(_checkCoincidencesUrl);
+});
+
 
 function OnSuccess(result) {
     OnAjaxRequest(result);
@@ -47,14 +54,6 @@ function OnAjaxRequest(result) {
     }
 }
 
-function initPartialContentUrl(partialContentUrl) {
-    _partialContentUrl = partialContentUrl;
-}
-
-function initCheckCoincidencesUrl(checkCoincidencesUrl) {
-    _checkCoincidencesUrl = checkCoincidencesUrl;
-}
-
 function alertBootstrap(mess) {
     $("#InfoMessage").text(mess);
     $("#Alert").removeClass("hide");
@@ -67,39 +66,22 @@ function lightBorderError() {
     $("#ErrorMsg").removeClass("has-success has-error").addClass("has-error");
 }
 
-function keydownRequest() {
-    $(document).keydown(function (e) {
-        if (e.which == 32) {
-            checkCoincidences(_checkCoincidencesUrl);
-        }
-    });
-}
-
-function checkCoincidences(url) {//$("#AjaxForm")
-    //var $data = {};    
-    //$data["taskDescription"] = $("#TaskDescription").val();
-    //$data["todolistId"] = $("#TodolistId").val();
-
+function checkCoincidences() {
     var description = $("#TaskDescription").val();
-    //var todolistId = $("#TodolistId").val();
-
+    var todolistId = $("#TodolistId").val();
     $.ajax({
-        url: url,
+        url: _checkCoincidencesUrl,
         type: "POST",
-        data: { taskDescription: description },//$data//$("#AjaxForm").serialize(),
-        contentType: false,
-        processData: false,
+        data: { taskDescription: description, taskId: todolistId },
         success: function (result) {
-            console.log("execut success");
             if (result.EnableSuccess) {
-                $("#Results").html(result.EnableSuccess);
+                $("#Results").html(result.SuccessMsg);
             }
             if (result.EnableError) {
                 $("#Results").html(result.ErrorMsg);
             }
         },
         error: function () {
-            console.log("execut error");
             $("#Results").html("Запрос не выполнен!");
         }
     });
