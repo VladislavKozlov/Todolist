@@ -1,9 +1,18 @@
 var _partialContentUrl;
 var _checkCoincidencesUrl;
+var _partialContentSortUrl;
+var _descDescription = "";
+var _descDate = "";
 
-function initUrls(partialContentUrl, checkCoincidencesUrl) {
+function initUrls(partialContentUrl, checkCoincidencesUrl, partialContentSortUrl) {
     _partialContentUrl = partialContentUrl;
     _checkCoincidencesUrl = checkCoincidencesUrl;
+    _partialContentSortUrl = partialContentSortUrl;
+}
+
+function initSort(descDescription, descDate) {
+    _descDescription = descDescription;
+    _descDate = descDate;
 }
 
 $(document).on("click", "#AddTask", function (e) {
@@ -22,17 +31,53 @@ $(document).on("click", ".ajaxLink", function (e) {
     });
 });
 
-$(document).on("input", "#TaskDescription", function (e) {
+$(document).on("click", "#Description", function (e) {
     e.preventDefault();
+    //var elemId = $(".sortLink")....;
+    //var data = { sortOrder: elemId }
+    if (_descDescription == "") {
+        _descDescription = "true";
+    }
+    $.ajax({
+        url: _partialContentSortUrl,
+        type: "GET",
+        data: { sortOrder: "Description", descending: _descDescription },//data
+        success: function (result) {
+            $("#PartialContent").html(result);
+        },
+        error: function () {
+            $("#PartialContent").html("Запрос не выполнен!");
+        }
+    });
+});
+
+$(document).on("click", "#EnrollmentDate", function (e) {
+    e.preventDefault();
+    if (_descDate == "") {
+        _descDate = "true";
+    }
+    $.ajax({
+        url: _partialContentSortUrl,
+        type: "GET",
+        data: { sortOrder: "EnrollmentDate", descending: _descDate },
+        success: function (result) {
+            $("#PartialContent").html(result);
+        },
+        error: function () {
+            $("#PartialContent").html("Запрос не выполнен!");
+        }
+    });
+});
+
+$(document).on("input", "#TaskDescription", function (e) {
     checkCoincidences(_checkCoincidencesUrl);
 });
 
-
-function OnSuccess(result) {
-    OnAjaxRequest(result);
+function onSuccess(result) {
+    onAjaxRequest(result);
 }
 
-function OnFailure() {
+function onFailure() {
     $("#Results").html("Запрос не выполнен!");
 }
 
@@ -42,7 +87,7 @@ function refreshPartialContent(url) {
     });
 }
 
-function OnAjaxRequest(result) {
+function onAjaxRequest(result) {
     if (result.EnableSuccess) {
         alertBootstrap(result.SuccessMsg);
         $("#ModDialog").modal("hide");

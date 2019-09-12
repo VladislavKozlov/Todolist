@@ -23,6 +23,34 @@ namespace Todolist.Repositories
             return _dbContext.Todolists.OrderByDescending(item => item.EnrollmentDate).ToList();
         }
 
+        public List<TodolistModel> GetTasks(string sortOrder, string descending)
+        {
+            if (descending == "true")
+            {
+                if (sortOrder == "Description")
+                {
+                    return _dbContext.Todolists.OrderByDescending(a => a.TaskDescription).ToList();
+                }
+                if (sortOrder == "EnrollmentDate")
+                {
+                    return _dbContext.Todolists.OrderByDescending(a => a.EnrollmentDate).ToList();
+                }
+                return null;
+            }
+            else
+            {
+                if (sortOrder == "Description")
+                {
+                    return _dbContext.Todolists.OrderBy(a => a.TaskDescription).ToList();
+                }
+                if (sortOrder == "EnrollmentDate")
+                {
+                    return _dbContext.Todolists.OrderBy(a => a.EnrollmentDate).ToList();
+                }
+                return null;
+            }
+        }
+
         public bool Search(string taskDescription, int todolistIdOrZero)
         {
             if (todolistIdOrZero == 0)

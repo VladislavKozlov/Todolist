@@ -20,9 +20,29 @@ namespace Todolist.Services
             _taskRepository = taskRepository;
         }
 
+        public string SwitchDescending(string descending)
+        {
+            if (descending == "true")
+            {
+                return "false";
+            }
+            if (descending == "false")
+            {
+                return "true";
+            }
+            return "";
+        }
+
         public TasksVm GetTasks()
         {
             var tasks = _taskRepository.GetTasks();
+            TasksVm tasksVm = new TasksVm { Tasks = tasks };
+            return tasksVm;
+        }
+
+        public TasksVm GetTasks(string sortOrder, string descending)
+        {
+            var tasks = _taskRepository.GetTasks(sortOrder, descending);
             TasksVm tasksVm = new TasksVm { Tasks = tasks };
             return tasksVm;
         }

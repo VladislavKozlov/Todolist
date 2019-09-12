@@ -10,6 +10,7 @@ namespace Todolist.Repositories
     public interface ITaskRepository
     {
         List<TodolistModel> GetTasks();
+        List<TodolistModel> GetTasks(string sortOrder, string descending);
         void Add(TodolistModel todolist);
         void Save();
         void Remove(TodolistModel todolist);

@@ -14,6 +14,8 @@ namespace Todolist.Controllers
     public class TodolistController : Controller
     {
         private readonly ITaskService _taskService;
+        private string _descDescription = "true";
+        private string _descDate = "true";
 
         public TodolistController(ITaskService taskService)
         {
@@ -40,6 +42,36 @@ namespace Todolist.Controllers
             {
                 var tasks = _taskService.GetTasks();
                 return PartialView("_PartialContent", tasks);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "Ошибка доступа к данным!";
+                return PartialView("_PartialContent");
+            }
+        }
+
+        public ActionResult PartialContentSort(string sortOrder, string descending)
+        {
+            try
+            {                
+                if (sortOrder == "Description")
+                {
+                    _descDescription = _taskService.SwitchDescending(descending);
+                    ViewBag.DescDescription = _descDescription;
+                    ViewBag.DescDate = _descDate;
+                    var tasks = _taskService.GetTasks(sortOrder, _descDescription);
+                    return PartialView("_PartialContent", tasks);
+                }
+                if (sortOrder == "EnrollmentDate")
+                {
+                    _descDate = _taskService.SwitchDescending(descending); ;
+                    ViewBag.DescDate = _descDate;
+                    ViewBag.DescDescription = _descDescription;
+                    var tasks = _taskService.GetTasks(sortOrder, _descDate);
+                    return PartialView("_PartialContent", tasks);
+                }
+                ViewBag.Error = "Ошибка доступа к данным!";
+                return PartialView("_PartialContent");
             }
             catch (Exception)
             {
