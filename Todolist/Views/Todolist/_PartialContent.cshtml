@@ -2,14 +2,14 @@
 @model TasksVm
 <table class="table">
     <thead>
-        <tr class="success">
-            <td>
-                <a href="@Url.Action("")" class="sortLink" id="Description">Описание задачи</a>
+        <tr>
+            <td class="sort" data-column="Description">
+                Описание задачи
             </td>
-            <td>
-                <a href="@Url.Action("")" class="sortLink" id="EnrollmentDate">Дата</a>
+            <td class="sort" data-column="EnrollmentDate">
+                Дата
             </td>
-            <td>
+            <td class="sort" data-column="Approved">
                 Статус
             </td>
             <td></td>
@@ -20,7 +20,7 @@
         {
             foreach (var item in Model.Tasks)
             {
-                <tr class="@(!item.Approved ? "active" : "danger")">
+                <tr class="@(!item.Approved ? "" : "danger")">
                     <td>
                         @item.TaskDescription
                     </td>
@@ -42,6 +42,3 @@
 <div class="text-info">
     <h4>@ViewBag.Error</h4>
 </div>
-<script>
-    initSort('@ViewBag.DescDescription', '@ViewBag.DescDate');
-</script>

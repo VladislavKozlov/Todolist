@@ -1,22 +1,15 @@
 var _partialContentUrl;
 var _checkCoincidencesUrl;
-var _partialContentSortUrl;
-var _descDescription = "";
-var _descDate = "";
+var _descDescription = false;
+var _descDate = false;
+var _descApproved = false;
 
-function initUrls(partialContentUrl, checkCoincidencesUrl, partialContentSortUrl) {
+function initUrls(partialContentUrl, checkCoincidencesUrl) {
     _partialContentUrl = partialContentUrl;
     _checkCoincidencesUrl = checkCoincidencesUrl;
-    _partialContentSortUrl = partialContentSortUrl;
-}
-
-function initSort(descDescription, descDate) {
-    _descDescription = descDescription;
-    _descDate = descDate;
 }
 
 $(document).on("click", "#AddTask", function (e) {
-    e.preventDefault();
     $.get($(this).data("url"), function (data) {
         $("#DialogContent").html(data);
         $("#ModDialog").modal("show");
@@ -31,17 +24,25 @@ $(document).on("click", ".ajaxLink", function (e) {
     });
 });
 
-$(document).on("click", "#Description", function (e) {
-    e.preventDefault();
-    //var elemId = $(".sortLink")....;
-    //var data = { sortOrder: elemId }
-    if (_descDescription == "") {
-        _descDescription = "true";
+$(document).on("click", ".sort", function (e) {
+    var descending;
+    var sortColumn = $(this).data("column");
+    if (sortColumn == "Description") {
+        descending = _descDescription;
+        var data = { sortColumn: sortColumn, descending: descending }
+    }
+    if (sortColumn == "EnrollmentDate") {
+        descending = _descDate;
+        var data = { sortColumn: sortColumn, descending: descending }
+    }
+    if (sortColumn == "Approved") {
+        descending = _descApproved;
+        var data = { sortColumn: sortColumn, descending: descending }
     }
     $.ajax({
-        url: _partialContentSortUrl,
+        url: _partialContentUrl,
         type: "GET",
-        data: { sortOrder: "Description", descending: _descDescription },//data
+        data: data,
         success: function (result) {
             $("#PartialContent").html(result);
         },
@@ -49,24 +50,15 @@ $(document).on("click", "#Description", function (e) {
             $("#PartialContent").html("Запрос не выполнен!");
         }
     });
-});
-
-$(document).on("click", "#EnrollmentDate", function (e) {
-    e.preventDefault();
-    if (_descDate == "") {
-        _descDate = "true";
+    if (sortColumn == "Description") {
+        _descDescription = !descending;
     }
-    $.ajax({
-        url: _partialContentSortUrl,
-        type: "GET",
-        data: { sortOrder: "EnrollmentDate", descending: _descDate },
-        success: function (result) {
-            $("#PartialContent").html(result);
-        },
-        error: function () {
-            $("#PartialContent").html("Запрос не выполнен!");
-        }
-    });
+    if (sortColumn == "EnrollmentDate") {
+        _descDate = !descending;
+    }
+    if (sortColumn == "Approved") {
+        _descApproved = !descending;
+    }
 });
 
 $(document).on("input", "#TaskDescription", function (e) {

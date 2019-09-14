@@ -18,36 +18,39 @@ namespace Todolist.Repositories
             _dbContext = dbContext;
         }
 
-        public List<TodolistModel> GetTasks()
+        public List<TodolistModel> GetTasks(string sortColumn = "", bool descending = false)
         {
-            return _dbContext.Todolists.OrderByDescending(item => item.EnrollmentDate).ToList();
-        }
-
-        public List<TodolistModel> GetTasks(string sortOrder, string descending)
-        {
-            if (descending == "true")
+            if (descending)
             {
-                if (sortOrder == "Description")
+                if (sortColumn == "Description")
                 {
                     return _dbContext.Todolists.OrderByDescending(a => a.TaskDescription).ToList();
                 }
-                if (sortOrder == "EnrollmentDate")
+                if (sortColumn == "EnrollmentDate")
                 {
                     return _dbContext.Todolists.OrderByDescending(a => a.EnrollmentDate).ToList();
+                }
+                if (sortColumn == "Approved")
+                {
+                    return _dbContext.Todolists.OrderByDescending(a => a.Approved).ToList();
                 }
                 return null;
             }
             else
             {
-                if (sortOrder == "Description")
+                if (sortColumn == "Description")
                 {
                     return _dbContext.Todolists.OrderBy(a => a.TaskDescription).ToList();
                 }
-                if (sortOrder == "EnrollmentDate")
+                if (sortColumn == "EnrollmentDate")
                 {
                     return _dbContext.Todolists.OrderBy(a => a.EnrollmentDate).ToList();
                 }
-                return null;
+                if (sortColumn == "Approved")
+                {
+                    return _dbContext.Todolists.OrderBy(a => a.Approved).ToList();
+                }
+                return _dbContext.Todolists.OrderByDescending(a => a.EnrollmentDate).ToList();
             }
         }
 
