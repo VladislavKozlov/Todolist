@@ -22,17 +22,10 @@ $(document).on("click", ".ajaxLink", function (e) {
 });
 
 $(document).on("click", ".sort", function (e) {
-    var descending = this.getAttribute("data-descending");
-    var sortColumn = this.getAttribute("data-column");
+    var descending = $(this).attr("descending");
+    var sortColumn = $(this).attr("column");
     var data = { sortColumn: sortColumn, descending: descending };
-    var antiDescending;
-    if (descending == "true") {
-        antiDescending = "false";
-    }
-    if (descending == "false") {
-        antiDescending = "true";
-    }
-    this.setAttribute("data-descending", antiDescending);
+    $(this).attr("descending", !descending);
     $.ajax({
         url: _partialContentUrl,
         type: "GET",
