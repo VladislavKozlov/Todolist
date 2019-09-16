@@ -25,20 +25,10 @@ $(document).on("click", ".ajaxLink", function (e) {
 });
 
 $(document).on("click", ".sort", function (e) {
-    var descending;
-    var sortColumn = $(this).data("column");
-    if (sortColumn == "Description") {
-        descending = _descDescription;
-        var data = { sortColumn: sortColumn, descending: descending }
-    }
-    if (sortColumn == "EnrollmentDate") {
-        descending = _descDate;
-        var data = { sortColumn: sortColumn, descending: descending }
-    }
-    if (sortColumn == "Approved") {
-        descending = _descApproved;
-        var data = { sortColumn: sortColumn, descending: descending }
-    }
+    var descending = this.getAttribute("data-descending");
+    var sortColumn = this.getAttribute("data-column");
+    var data = { sortColumn: sortColumn, descending: descending }
+    var antiDescending;
     $.ajax({
         url: _partialContentUrl,
         type: "GET",
@@ -50,15 +40,13 @@ $(document).on("click", ".sort", function (e) {
             $("#PartialContent").html("Запрос не выполнен!");
         }
     });
-    if (sortColumn == "Description") {
-        _descDescription = !descending;
+    if (descending == "true") {
+        antiDescending = "false";
     }
-    if (sortColumn == "EnrollmentDate") {
-        _descDate = !descending;
+    if (descending == "false") {
+        antiDescending = "true";
     }
-    if (sortColumn == "Approved") {
-        _descApproved = !descending;
-    }
+    this.setAttribute("data-descending", antiDescending);
 });
 
 $(document).on("input", "#TaskDescription", function (e) {

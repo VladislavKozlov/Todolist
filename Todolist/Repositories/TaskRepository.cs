@@ -34,7 +34,6 @@ namespace Todolist.Repositories
                 {
                     return _dbContext.Todolists.OrderByDescending(a => a.Approved).ToList();
                 }
-                return null;
             }
             else
             {
@@ -50,8 +49,8 @@ namespace Todolist.Repositories
                 {
                     return _dbContext.Todolists.OrderBy(a => a.Approved).ToList();
                 }
-                return _dbContext.Todolists.OrderByDescending(a => a.EnrollmentDate).ToList();
             }
+            return _dbContext.Todolists.OrderByDescending(a => a.EnrollmentDate).ToList();
         }
 
         public bool Search(string taskDescription, int todolistIdOrZero)
