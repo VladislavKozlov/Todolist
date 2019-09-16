@@ -22,10 +22,10 @@ $(document).on("click", ".ajaxLink", function (e) {
 });
 
 $(document).on("click", ".sort", function (e) {
-    var descending = $(this).attr("descending");
-    var sortColumn = $(this).attr("column");
+    var descending = $(this).data("descending");
+    var sortColumn = $(this).data("column");
     var data = { sortColumn: sortColumn, descending: descending };
-    $(this).attr("descending", !descending);
+    $(this).data("descending", !descending);
     $.ajax({
         url: _partialContentUrl,
         type: "GET",
