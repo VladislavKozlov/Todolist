@@ -1,8 +1,5 @@
 var _partialContentUrl;
 var _checkCoincidencesUrl;
-var _descDescription = false;
-var _descDate = false;
-var _descApproved = false;
 
 function initUrls(partialContentUrl, checkCoincidencesUrl) {
     _partialContentUrl = partialContentUrl;
