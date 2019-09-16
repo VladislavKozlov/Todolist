@@ -24,8 +24,15 @@ $(document).on("click", ".ajaxLink", function (e) {
 $(document).on("click", ".sort", function (e) {
     var descending = this.getAttribute("data-descending");
     var sortColumn = this.getAttribute("data-column");
-    var data = { sortColumn: sortColumn, descending: descending }
+    var data = { sortColumn: sortColumn, descending: descending };
     var antiDescending;
+    if (descending == "true") {
+        antiDescending = "false";
+    }
+    if (descending == "false") {
+        antiDescending = "true";
+    }
+    this.setAttribute("data-descending", antiDescending);
     $.ajax({
         url: _partialContentUrl,
         type: "GET",
@@ -37,13 +44,6 @@ $(document).on("click", ".sort", function (e) {
             $("#PartialContent").html("Запрос не выполнен!");
         }
     });
-    if (descending == "true") {
-        antiDescending = "false";
-    }
-    if (descending == "false") {
-        antiDescending = "true";
-    }
-    this.setAttribute("data-descending", antiDescending);
 });
 
 $(document).on("input", "#TaskDescription", function (e) {

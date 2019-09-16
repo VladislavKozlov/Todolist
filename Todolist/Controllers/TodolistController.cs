@@ -24,7 +24,6 @@ namespace Todolist.Controllers
         {
             try
             {
-                ViewBag.Error = "";
                 var tasks = _taskService.GetTasks();
                 return View(tasks);
             }
@@ -39,7 +38,6 @@ namespace Todolist.Controllers
         {
             try
             {
-                ViewBag.Error = "";
                 var tasksParams = _taskService.GetTasks(sortColumn, descending);
                 return PartialView("_PartialContent", tasksParams);
             }
