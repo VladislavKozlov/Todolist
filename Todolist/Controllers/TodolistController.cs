@@ -38,8 +38,8 @@ namespace Todolist.Controllers
         {
             try
             {
-                var tasksParams = _taskService.GetTasks(sortColumn, descending);
-                return PartialView("_PartialContent", tasksParams);
+                var tasks = _taskService.GetTasks(sortColumn, descending);
+                return PartialView("_PartialContent", tasks);
             }
             catch (Exception)
             {
