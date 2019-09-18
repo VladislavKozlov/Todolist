@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Todolist.ContextDb;
@@ -20,34 +21,14 @@ namespace Todolist.Repositories
 
         public List<TodolistModel> GetTasks(string sortColumn = "", bool descending = false)
         {
-            if (descending)
+            foreach (var prop in typeof(TodolistModel).GetProperties())
             {
-                if (sortColumn == "Description")
+                if (sortColumn.IndexOf(prop.Name, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
-                    return _dbContext.Todolists.OrderByDescending(a => a.TaskDescription).ToList();
-                }
-                if (sortColumn == "EnrollmentDate")
-                {
-                    return _dbContext.Todolists.OrderByDescending(a => a.EnrollmentDate).ToList();
-                }
-                if (sortColumn == "Approved")
-                {
-                    return _dbContext.Todolists.OrderByDescending(a => a.Approved).ToList();
-                }
-            }
-            else
-            {
-                if (sortColumn == "Description")
-                {
-                    return _dbContext.Todolists.OrderBy(a => a.TaskDescription).ToList();
-                }
-                if (sortColumn == "EnrollmentDate")
-                {
-                    return _dbContext.Todolists.OrderBy(a => a.EnrollmentDate).ToList();
-                }
-                if (sortColumn == "Approved")
-                {
-                    return _dbContext.Todolists.OrderBy(a => a.Approved).ToList();
+                    var tasks = descending == true
+                    ? _dbContext.Todolists.OrderByDescending(x => prop.GetValue(x, null)).ToList()
+                    : _dbContext.Todolists.OrderBy(x => prop.GetValue(x, null)).ToList();
+                    return tasks;
                 }
             }
             return _dbContext.Todolists.OrderByDescending(a => a.EnrollmentDate).ToList();
