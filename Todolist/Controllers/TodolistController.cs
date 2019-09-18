@@ -27,7 +27,7 @@ namespace Todolist.Controllers
                 var tasks = _taskService.GetTasks();
                 return View(tasks);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 ViewBag.Error = "Ошибка доступа к данным!";
                 return View();
@@ -41,7 +41,7 @@ namespace Todolist.Controllers
                 var tasks = _taskService.GetTasks(sortColumn, descending);
                 return PartialView("_PartialContent", tasks);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 ViewBag.Error = "Ошибка доступа к данным!";
                 return PartialView("_PartialContent");

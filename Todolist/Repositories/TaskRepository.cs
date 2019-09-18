@@ -21,13 +21,14 @@ namespace Todolist.Repositories
 
         public List<TodolistModel> GetTasks(string sortColumn = "", bool descending = false)
         {
+            var tasksContext = _dbContext.Todolists;
             foreach (var prop in typeof(TodolistModel).GetProperties())
             {
                 if (sortColumn.IndexOf(prop.Name, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     var tasks = descending == true
-                    ? _dbContext.Todolists.OrderByDescending(x => prop.GetValue(x, null)).ToList()
-                    : _dbContext.Todolists.OrderBy(x => prop.GetValue(x, null)).ToList();
+                    ? tasksContext.OrderByDescending(x => prop.GetValue(x, null)).ToList()
+                    : tasksContext.OrderBy(x => prop.GetValue(x, null)).ToList();
                     return tasks;
                 }
             }
