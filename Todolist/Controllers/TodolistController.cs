@@ -20,12 +20,12 @@ namespace Todolist.Controllers
             _taskService = taskService;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
             try
             {
-                var tasks = _taskService.GetTasks();
-                return View(tasks);
+                var tasksVm = _taskService.GetTasksPagin(page);
+                return View(tasksVm);
             }
             catch (Exception e)
             {
@@ -34,12 +34,12 @@ namespace Todolist.Controllers
             }
         }
 
-        public ActionResult PartialContent(string sortColumn = "", bool descending = false)
+        public ActionResult PartialContent(string sortColumn = "", bool descending = false, int page = 1)
         {
             try
             {
-                var tasks = _taskService.GetTasks(sortColumn, descending);
-                return PartialView("_PartialContent", tasks);
+                var tasksVm = _taskService.GetTasksPagin(page, sortColumn, descending);
+                return PartialView("_PartialContent", tasksVm);
             }
             catch (Exception e)
             {

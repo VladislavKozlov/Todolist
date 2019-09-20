@@ -10,25 +10,9 @@
 <br /><br />
 <button type="button" class="btn btn-info" data-url="@Url.Action("Create")" id="AddTask">Add Task</button>
 <br /><br />
-<table class="table">
-    <thead>
-        <tr>
-            <td class="sort" data-column="TaskDescription" data-descending="false">
-                Описание задачи
-            </td>
-            <td class="sort" data-column="EnrollmentDate" data-descending="false">
-                Дата
-            </td>
-            <td class="sort" data-column="Approved" data-descending="false">
-                Статус
-            </td>
-            <td></td>
-        </tr>
-    </thead>
-    <tbody id="PartialContent">
-        @Html.Partial("_PartialContent", Model)
-    </tbody>
-</table>
+<div id="PartialContent">
+    @Html.Partial("_PartialContent", Model)
+</div>
 <div class="text-info">
     <h4>@ViewBag.Error</h4>
 </div>

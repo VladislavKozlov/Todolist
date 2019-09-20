@@ -1,5 +1,8 @@
 var _partialContentUrl;
 var _checkCoincidencesUrl;
+var _descDescription = false;
+var _descDate = false;
+var _descApproved = false;
 
 function initUrls(partialContentUrl, checkCoincidencesUrl) {
     _partialContentUrl = partialContentUrl;
@@ -21,11 +24,25 @@ $(document).on("click", ".ajaxLink", function (e) {
     });
 });
 
-$(document).on("click", ".sort", function (e) {
-    var descending = $(this).data("descending");
+$(document).on("click", ".sort", function () {
+    var data;
+    var descending;
     var sortColumn = $(this).data("column");
-    var data = { sortColumn: sortColumn, descending: descending };
-    $(this).data("descending", !descending);
+    if (sortColumn === "TaskDescription") {
+        descending = _descDescription;
+        data = { sortColumn: sortColumn, descending: descending }
+        _descDescription = !descending;
+    }
+    if (sortColumn === "EnrollmentDate") {
+        descending = _descDate;
+        data = { sortColumn: sortColumn, descending: descending }
+        _descDate = !descending;
+    }
+    if (sortColumn === "Approved") {
+        descending = _descApproved;
+        data = { sortColumn: sortColumn, descending: descending }
+        _descApproved = !descending;
+    }
     $.ajax({
         url: _partialContentUrl,
         type: "GET",
@@ -99,6 +116,25 @@ function checkCoincidences() {
         error: function () {
             $("#Results").html("Запрос не выполнен!");
         }
+    });
+
+    $(document).on("click", ".paginLink", function (e) {
+        e.preventDefault();
+        var data;
+        var page = $(this).attr("href");//???
+        data = { page: page }
+        console.log(data);
+        $.ajax({
+            url: _partialContentUrl,
+            type: "GET",
+            data: data,
+            success: function (result) {
+                $("#PartialContent").html(result);
+            },
+            error: function () {
+                $("#PartialContent").html("Запрос не выполнен!");
+            }
+        });
     });
 }
 

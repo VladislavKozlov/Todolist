@@ -9,6 +9,7 @@ namespace Todolist.Services
 {
     public interface ITaskService
     {
+        TasksVm GetTasksPagin(int page, string sortColumn = "", bool descending = false);
         TasksVm GetTasks(string sortColumn = "", bool descending = false);
         void Add(TaskInput taskInput);
         void Edit(TaskInput taskInput);

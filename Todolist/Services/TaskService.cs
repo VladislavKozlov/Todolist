@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 using Todolist.ContextDb;
 using Todolist.Models;
 using Todolist.Repositories;
@@ -18,6 +21,16 @@ namespace Todolist.Services
         public TaskService(ITaskRepository taskRepository)
         {
             _taskRepository = taskRepository;
+        }
+
+        public TasksVm GetTasksPagin(int page, string sortColumn = "", bool descending = false)
+        {
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["DefaultPageSize"]);
+            var pagiList = _taskRepository.GetTasks(sortColumn, descending);
+            IEnumerable<TodolistModel> tasksPerPages = pagiList.Skip((page - 1) * pageSize).Take(pageSize);
+            TasksPaginInfo tasksPaginInfo = new TasksPaginInfo { PageNumber = page, PageSize = pageSize, TotalItems = pagiList.Count };
+            TasksVm tasksVm = new TasksVm { PaginInfoVm = tasksPaginInfo, TasksPage = tasksPerPages };
+            return tasksVm;
         }
 
         public TasksVm GetTasks(string sortColumn = "", bool descending = false)
