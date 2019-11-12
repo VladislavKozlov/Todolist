@@ -1,5 +1,4 @@
-﻿@using Todolist.Helpers
-@using Todolist.ViewModels
+﻿@using Todolist.ViewModels
 @model TasksVm
 <table class="table">
     <thead>
@@ -41,6 +40,20 @@
     </tbody>
 </table>
 <br />
-<div class="btn-group">
-    @Html.PageLinks(Model.PaginInfoVm, x => Url.Action("PartialContent", new { page = x }))
-</div>
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="pagelink" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item"><a class="pagelink" href="#">1</a></li>
+        <li class="page-item"><a class="pagelink" href="#">2</a></li>
+        <li class="page-item"><a class="pagelink" href="#">3</a></li>
+        <li class="page-item">
+            <a class="pagelink" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

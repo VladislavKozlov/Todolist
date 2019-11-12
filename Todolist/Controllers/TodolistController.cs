@@ -24,7 +24,7 @@ namespace Todolist.Controllers
         {
             try
             {
-                var tasksVm = _taskService.GetTasksPagin(page);
+                var tasksVm = _taskService.GetTasksPaging(page);
                 return View(tasksVm);
             }
             catch (Exception e)
@@ -38,7 +38,7 @@ namespace Todolist.Controllers
         {
             try
             {
-                var tasksVm = _taskService.GetTasksPagin(page, sortColumn, descending);
+                var tasksVm = _taskService.GetTasksPaging(page, sortColumn, descending);
                 return PartialView("_PartialContent", tasksVm);
             }
             catch (Exception e)

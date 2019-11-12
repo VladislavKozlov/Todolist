@@ -118,7 +118,7 @@ function checkCoincidences() {
         }
     });
 
-    $(document).on("click", ".paginLink", function (e) {
+    $(document).on("click", ".pagelink", function (e) {
         e.preventDefault();
         var data;
         var page = $(this).attr("href");//???

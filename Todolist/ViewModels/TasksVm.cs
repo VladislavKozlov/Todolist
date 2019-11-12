@@ -11,6 +11,6 @@ namespace Todolist.ViewModels
     {
         public List<TodolistModel> Tasks { get; set; }
         public IEnumerable<TodolistModel> TasksPage { get; set; }
-        public TasksPaginInfo PaginInfoVm { get; set; }
+        public PagingInfo PaginInfoVm { get; set; }
     }
 }

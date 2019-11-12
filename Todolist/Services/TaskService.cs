@@ -23,13 +23,13 @@ namespace Todolist.Services
             _taskRepository = taskRepository;
         }
 
-        public TasksVm GetTasksPagin(int page, string sortColumn = "", bool descending = false)
+        public TasksVm GetTasksPaging(int page, string sortColumn = "", bool descending = false)
         {
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["DefaultPageSize"]);
             var pagiList = _taskRepository.GetTasks(sortColumn, descending);
             IEnumerable<TodolistModel> tasksPerPages = pagiList.Skip((page - 1) * pageSize).Take(pageSize);
-            TasksPaginInfo tasksPaginInfo = new TasksPaginInfo { PageNumber = page, PageSize = pageSize, TotalItems = pagiList.Count };
-            TasksVm tasksVm = new TasksVm { PaginInfoVm = tasksPaginInfo, TasksPage = tasksPerPages };
+            PagingInfo pagingInfo = new PagingInfo { PageNumber = page, PageSize = pageSize, TotalItems = pagiList.Count };
+            TasksVm tasksVm = new TasksVm { PaginInfoVm = pagingInfo, TasksPage = tasksPerPages };
             return tasksVm;
         }
 
