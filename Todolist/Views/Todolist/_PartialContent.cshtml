@@ -42,18 +42,24 @@
 <br />
 <nav aria-label="Page navigation">
     <ul class="pagination">
-        <li class="page-item">
-            <a class="pagelink" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        <li class="page-item"><a class="pagelink" href="#">1</a></li>
-        <li class="page-item"><a class="pagelink" href="#">2</a></li>
-        <li class="page-item"><a class="pagelink" href="#">3</a></li>
-        <li class="page-item">
-            <a class="pagelink" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
+        @{
+            var pages = Model.PagingInfoVm.TotalItems / Model.PagingInfoVm.PageSize + (Model.PagingInfoVm.TotalItems % Model.PagingInfoVm.PageSize > 0 ? 1 : 0);
+            var previousPage = pages - 1;
+            var nextPage = pages + 1;
+            <li class="page-item">
+                <a class="pagelink" href="#" data-page="@previousPage" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            for (var i = 1; i <= pages; i++)
+            {
+                <li class="page-item"><a class="pagelink" href="#" data-page="@i">@i</a></li>
+            }
+            <li class="page-item">
+                <a class="pagelink" href="#" data-page="@nextPage" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        }
     </ul>
 </nav>

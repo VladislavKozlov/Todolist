@@ -117,26 +117,24 @@ function checkCoincidences() {
             $("#Results").html("Запрос не выполнен!");
         }
     });
-
-    $(document).on("click", ".pagelink", function (e) {
-        e.preventDefault();
-        var data;
-        var page = $(this).attr("href");//???
-        data = { page: page }
-        console.log(data);
-        $.ajax({
-            url: _partialContentUrl,
-            type: "GET",
-            data: data,
-            success: function (result) {
-                $("#PartialContent").html(result);
-            },
-            error: function () {
-                $("#PartialContent").html("Запрос не выполнен!");
-            }
-        });
-    });
 }
+
+$(document).on("click", ".pagelink", function (e) {
+    e.preventDefault();
+    var page = $(this).data("page");
+    var data = { page: page };
+    $.ajax({
+        url: _partialContentUrl,
+        type: "GET",
+        data: data,
+        success: function (result) {
+            $("#PartialContent").html(result);
+        },
+        error: function () {
+            $("#PartialContent").html("Запрос не выполнен!");
+        }
+    });
+});
 
 
 

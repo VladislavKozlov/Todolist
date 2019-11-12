@@ -29,7 +29,7 @@ namespace Todolist.Services
             var pagiList = _taskRepository.GetTasks(sortColumn, descending);
             IEnumerable<TodolistModel> tasksPerPages = pagiList.Skip((page - 1) * pageSize).Take(pageSize);
             PagingInfo pagingInfo = new PagingInfo { PageNumber = page, PageSize = pageSize, TotalItems = pagiList.Count };
-            TasksVm tasksVm = new TasksVm { PaginInfoVm = pagingInfo, TasksPage = tasksPerPages };
+            TasksVm tasksVm = new TasksVm { PagingInfoVm = pagingInfo, TasksPage = tasksPerPages };
             return tasksVm;
         }
 
