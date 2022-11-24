@@ -46,6 +46,8 @@ table {
 }
 
     table > thead {
+        cursor: pointer;
+        font-weight: bold;
     }
 
     table > tbody {
