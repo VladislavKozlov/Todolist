@@ -31,8 +31,8 @@
                         @(!item.Approved ? "В процессе" : "Решена")
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.TodolistId }, new { @class = "ajaxLink" }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
+                        @Html.ActionLink("Редактировать", "Edit", new { id = item.TodolistId }, new { @class = "ajaxLink" }) |
+                        @Html.ActionLink("Удалить", "Delete", new { id = item.TodolistId }, new { @class = "ajaxLink" })
                     </td>
                 </tr>
             }
